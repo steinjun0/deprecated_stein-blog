@@ -20,7 +20,7 @@
 import { defineComponent, ref, onMounted } from "@vue/composition-api";
 export default defineComponent({
   setup() {
-    let show = ref(false);
+    const show = ref(false);
     const delayFunction = (func, input = 100) => {
       return () => {
         setTimeout(func, input);
