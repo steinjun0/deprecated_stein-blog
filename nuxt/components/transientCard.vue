@@ -1,16 +1,28 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col>
-      <v-btn @click="switchShow">{{ show }}</v-btn>
-      <TransientCard :show="show"></TransientCard>
-    </v-col>
-  </v-row>
+  <transition name="fade">
+    <v-card
+      v-if="showLocal"
+      width="160px"
+      height="90px"
+      style="padding: 16px"
+      class="d-flex justify-center align-center"
+    >
+      <span>안녕하세요</span>
+    </v-card>
+  </transition>
 </template>
+      
 <script>
 import { defineComponent, ref, onMounted } from '@vue/composition-api'
 export default defineComponent({
+  props: {
+    show: {
+      type: Boolean,
+      default: true,
+    },
+  },
   setup() {
-    const show = ref(false)
+    const showLocal = ref(false)
     const delayFunction = (func, input = 100) => {
       return () => {
         setTimeout(func, input)
@@ -18,13 +30,18 @@ export default defineComponent({
     }
     const switchShow = (input = undefined) => {
       if (typeof input !== 'boolean') {
-        show.value = !show.value
+        showLocal.value = !showLocal.value
       } else {
-        show.value = input
+        showLocal.value = input
       }
     }
     onMounted(delayFunction(switchShow, 1000))
-    return { show, switchShow }
+    return { showLocal, switchShow }
+  },
+  watch: {
+    show() {
+      this.showLocal = this.show
+    },
   },
 })
 </script>
