@@ -7,7 +7,7 @@
       style="padding: 16px"
       class="d-flex justify-center align-center"
     >
-      <span>안녕하세요</span>
+      <slot></slot>
     </v-card>
   </transition>
 </template>
