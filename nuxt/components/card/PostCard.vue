@@ -1,47 +1,44 @@
 <template>
-  <transition name="fade">
-    <v-card
-      v-if="showLocal"
-      width="160px"
-      height="90px"
-      style="padding: 16px"
-      class="d-flex justify-center align-center"
+  <div
+    class="d-flex flex-column"
+    style="
+      border-bottom: solid #c4c4c4 1px;
+      width: 282px;
+      height: 155px;
+      color: #373737;
+    "
+  >
+    <span style="font-size: 14px">{{ category }}</span>
+    <span
+      style="font-size: 24px; margin-bottom: 14px"
+      class="font-weight-medium"
+      >{{ firstLineTitle }} <br />{{ secondLineTitle }}</span
     >
-      <slot></slot>
-    </v-card>
-  </transition>
+    <span style="font-size: 16px">{{ subtitle }}</span>
+  </div>
 </template>
       
 <script>
-import { defineComponent, ref, onMounted } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 export default defineComponent({
   props: {
-    show: {
-      type: Boolean,
-      default: true,
+    category: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: Array,
+      required: true,
+    },
+    subtitle: {
+      type: String,
+      required: true,
     },
   },
-  setup() {
-    const showLocal = ref(false)
-    const delayFunction = (func, input = 100) => {
-      return () => {
-        setTimeout(func, input)
-      }
-    }
-    const switchShow = (input = undefined) => {
-      if (typeof input !== 'boolean') {
-        showLocal.value = !showLocal.value
-      } else {
-        showLocal.value = input
-      }
-    }
-    onMounted(delayFunction(switchShow, 1000))
-    return { showLocal, switchShow }
-  },
-  watch: {
-    show() {
-      this.showLocal = this.show
-    },
+  setup(props) {
+    const firstLineTitle = props.title[0]
+    const secondLineTitle = props.title[1]
+    return { firstLineTitle, secondLineTitle }
   },
 })
 </script>

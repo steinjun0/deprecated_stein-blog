@@ -1,7 +1,14 @@
 <template>
   <v-app>
     <v-main>
-      <v-container style="max-width: 1440px; min-height: 100%">
+      <v-container
+        style="
+          max-width: 1440px;
+          min-height: 100%;
+          padding: 0 80px;
+          padding-bottom: 80px;
+        "
+      >
         <Nuxt />
       </v-container>
     </v-main>
@@ -13,7 +20,6 @@
 
 <script>
 export default {
-
   data() {
     return {
       searchWord: '',
@@ -45,7 +51,6 @@ export default {
       return this.$route.path
     },
   },
-  watch: {
-  },
+  watch: {},
 }
 </script>
