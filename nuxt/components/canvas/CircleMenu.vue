@@ -1,7 +1,6 @@
 <template>
-  <div style="width: 100%; height: 100%">
+  <div style="width: 100%; height: 100%;padding: 20px 40px">
     <canvas id="circle-menu" style="width: 100%; height: 100%"></canvas>
-    {{  }}
   </div>
 </template>
 

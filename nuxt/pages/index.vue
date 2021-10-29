@@ -12,10 +12,10 @@
     <v-col md="4" style="border-right: solid #c4c4c4 1px">
       <LeftPostCards />
     </v-col>
-    <v-col md="4" style="height: 600px">
+    <v-col md="5" style="height: 600px; border-right: solid #c4c4c4 1px">
       <CanvasCircleMenu />
     </v-col>
-    <v-col md="4"> visual content </v-col>
+    <v-col md="3" style=""> visual content </v-col>
   </v-row>
 </template>
 <script>
