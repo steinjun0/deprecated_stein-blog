@@ -5,7 +5,7 @@
         style="
           max-width: 1440px;
           min-height: 100%;
-          padding: 0 80px;
+          padding: 0 40px;
           padding-bottom: 80px;
         "
       >

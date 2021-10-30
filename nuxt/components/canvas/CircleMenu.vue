@@ -1,54 +1,58 @@
 <template>
-  <div style="width: 100%; height: 100%;padding: 20px 40px">
+  <div style="width: 100%; height: 100%; padding: 20px 60px">
     <canvas id="circle-menu" style="width: 100%; height: 100%"></canvas>
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from '@vue/composition-api'
+import { defineComponent, onMounted } from '@vue/composition-api'
+import VueCanvas, { drawCircleMenu } from '~/components/canvas/utils'
 export default defineComponent({
   setup() {
-    let ctx
-    const canvasWidth = ref(0)
-    const canvasHeight = ref(0)
+    // let ctx
 
-    const getCanvas = () => {
-      const canvas = document.getElementById('circle-menu')
-      const ctx = canvas.getContext('2d')
+    // const getCanvas = (canvas) => {
 
-      const rect = canvas.getBoundingClientRect()
-      canvasWidth.value = rect.width
-      canvasHeight.value = rect.height
-      canvas.width = canvasWidth.value
-      canvas.height = canvasHeight.value 
+    //   const ctx = canvas.getContext('2d')
+    //   const responseCanvasSize = (canvas, canvasWidthRef, canvasHeightRef) => {
+    //     const rect = canvas.getBoundingClientRect()
+    //     canvasWidthRef.value = rect.width
+    //     canvasHeightRef.value = rect.height
+    //     canvas.width = canvasWidthRef.value
+    //     canvas.height = canvasHeightRef.value
+    //   }
 
-      window.addEventListener('resize', () => {
-        const rect = canvas.getBoundingClientRect()
-        canvasWidth.value = rect.width
-        canvasHeight.value = rect.height
-        canvas.width = canvasWidth.value
-        canvas.height = canvasHeight.value 
-        drawCanvas(canvas.getContext('2d'))
-      })
-      return {canvas, ctx}
-    }
-    const drawCanvas = (ctx) => {
-      ctx.beginPath()
-      ctx.arc(canvasWidth.value/2, canvasHeight.value/2, canvasWidth.value/2 - 2, 0, Math.PI * 2, true) // Outer circle
-      ctx.fillStyle = '#c4c4c4'
-      ctx.fill()
-      ctx.stroke()
-    }
+    //   responseCanvasSize(canvas, canvasWidth, canvasHeight)
+
+    //   window.addEventListener('resize', () => {
+    //     responseCanvasSize(canvas, canvasWidth, canvasHeight)
+    //     drawCanvas(canvas.getContext('2d'))
+    //   })
+    //   return {canvas, ctx}
+    // }
+    // const drawCanvas = (ctx) => {
+    //   ctx.beginPath()
+    //   ctx.arc(canvasWidth.value/2, canvasHeight.value/2, canvasWidth.value/2 - 2, 0, Math.PI * 2, true) // Outer circle
+    //   ctx.fillStyle = '#c4c4c4'
+    //   ctx.fill()
+    //   ctx.stroke()
+    // }
     const mounted = () => {
-      const tempCanvas = getCanvas()
-      ctx = tempCanvas.ctx
+      const canvas = document.getElementById('circle-menu')
+      // const tempCanvas = getCanvas(canvas)
+      // ctx = tempCanvas.ctx
 
-      drawCanvas(ctx)
-      
+      // drawCanvas(ctx)
+      const vueCanvas = new VueCanvas(canvas)
+      drawCircleMenu(vueCanvas.canvas)
+
+      vueCanvas.makeCanvasResponsive(() => {
+        drawCircleMenu(vueCanvas.canvas)
+      })
     }
     onMounted(mounted)
 
-    return {  }
+    return {}
   },
 })
 </script>
