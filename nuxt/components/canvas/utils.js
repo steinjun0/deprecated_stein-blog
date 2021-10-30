@@ -4,7 +4,6 @@ export default class VueCanvas {
         this.canvas = canvas
         this.ctx = canvas.getContext('2d')
         this.responseCanvasSize()
-        // this.makeCanvasResponsive(canvasWidthRef,canvasHeightRef, drawCanvas(...args))
     }
 
     responseCanvasSize() {
@@ -42,30 +41,3 @@ export function drawCircleMenu(canvas, fillStyle = '#c4c4c4') {
     ctx.stroke()
     ctx.restore()
 }
-
-// export default {
-
-//     responseCanvasSize(canvas, canvasWidthRef, canvasHeightRef) {
-//         const rect = canvas.getBoundingClientRect()
-//         canvasWidthRef.value = rect.width
-//         canvasHeightRef.value = rect.height
-//         canvas.width = canvasWidthRef.value
-//         canvas.height = canvasHeightRef.value
-//     },
-//     makeCanvasResponsive(canvas, canvasWidthRef, canvasHeightRef, drawCanvas) {
-//         const ctx = canvas.getContext('2d')
-//         this.responseCanvasSize(canvas, canvasWidthRef, canvasHeightRef)
-//         window.addEventListener('resize', () => {
-//             this.responseCanvasSize(canvas, canvasWidthRef, canvasHeightRef)
-//             drawCanvas(canvas.getContext('2d'))
-//         })
-//         return { canvas, ctx }
-//     },
-//     drawCanvas(ctx, x, y, radius) {
-//         ctx.beginPath()
-//         ctx.arc(x, y, radius, 0, Math.PI * 2, true) // Outer circle
-//         ctx.fillStyle = '#c4c4c4'
-//         ctx.fill()
-//         ctx.stroke()
-//     }
-// }
