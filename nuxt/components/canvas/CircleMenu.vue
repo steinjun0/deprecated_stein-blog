@@ -6,17 +6,27 @@
 
 <script>
 import { defineComponent, onMounted } from '@vue/composition-api'
-import VueCanvas, { drawCircleMenu } from '~/components/canvas/utils'
+import { CircleMenuCanvas } from '~/components/canvas/utils'
 export default defineComponent({
   setup() {
     const mounted = () => {
       const canvas = document.getElementById('circle-menu')
-      const vueCanvas = new VueCanvas(canvas)
-      drawCircleMenu(vueCanvas.canvas)
 
-      vueCanvas.makeCanvasResponsive(() => {
-        drawCircleMenu(vueCanvas.canvas)
+      const circleMenuCanvas = new CircleMenuCanvas(canvas)
+      circleMenuCanvas.draw(circleMenuCanvas.canvas)
+
+      circleMenuCanvas.makeCanvasResponsive(() => {
+        circleMenuCanvas.draw(circleMenuCanvas.canvas)
       })
+
+      circleMenuCanvas.animate(() => {
+        circleMenuCanvas.draw(circleMenuCanvas.canvas)
+      })
+
+      canvas.addEventListener(
+        'click',
+        circleMenuCanvas.getClickedSectorIndex.bind(circleMenuCanvas)
+      )
     }
     onMounted(mounted)
 
