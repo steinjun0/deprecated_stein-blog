@@ -1,4 +1,4 @@
-
+const angleConst = [0, 1.57, 3.14, 4.71, 6.28]
 export default class VueCanvas {
     constructor(canvas) {
         this.canvas = canvas
@@ -74,7 +74,6 @@ export function drawSector(canvas, x, y, radius, finishAngle, startAngle, fillSt
 export class CircleMenuCanvas extends VueCanvas {
     constructor(canvas) {
         super(canvas)
-        this.positions = [0, 1.57, 3.14, 4.71]
         this.presentPositionAngle = 0
         this.sectorPaths = ''
         this.sectorPart = ['', '', '', '']
@@ -95,23 +94,28 @@ export class CircleMenuCanvas extends VueCanvas {
         const x = event.offsetX;
         const y = event.offsetY;
         this.sectorPart.forEach((path, index) => {
-            if (this.ctx.isPointInPath(path, x, y) && (this.presentPositionAngle % (1.57) < 0.01 || 1.57 - this.presentPositionAngle % (1.57) < 0.01)) {
+            if (this.ctx.isPointInPath(path, x, y) && (this.presentPositionAngle % (angleConst[1]) < 0.01 || angleConst[1] - this.presentPositionAngle % (angleConst[1]) < 0.01)) {
                 function follow(object, index) {
-                    const objectiveAngle = (index === 0 && object.presentPositionAngle !== 0) ? 6.28 : index * 1.57
-                    if (object.presentPositionAngle.toFixed(2) < objectiveAngle) {
-                        // object.presentPositionAngle += Math.sin(Number((objectiveAngle - object.presentPositionAngle))) * 0.1
-                        console.log('Math.sin(Number((objectiveAngle - object.presentPositionAngle))) * 0.1', Math.sin(Number((objectiveAngle - object.presentPositionAngle))) * 0.1)
-                        console.log('object.presentPositionAngle', object.presentPositionAngle)
-                        object.presentPositionAngle = Number((object.presentPositionAngle + 0.01).toFixed(2))
-                        setTimeout(() => { follow(object, index) }, 1)
-                    }
-                    else if (object.presentPositionAngle > objectiveAngle) {
-                        object.presentPositionAngle = Number((object.presentPositionAngle - 0.01).toFixed(2))
-                        setTimeout(() => { follow(object, index) }, 1)
-                    }
-                    if (object.presentPositionAngle.toFixed(2) >= 6.28) {
+
+                    // index가 0이고, 현재각은 0이 아닐떄 -> 
+                    const objectiveAngle = (index === 0 && object.presentPositionAngle !== 0) ? angleConst[0] : index * angleConst[1]
+
+                    if (object.presentPositionAngle.toFixed(2) >= angleConst[4] || object.presentPositionAngle.toFixed(2) < angleConst[0]) {
                         object.presentPositionAngle = 0
                     }
+
+                    if (object.presentPositionAngle.toFixed(2) < objectiveAngle) {
+                        object.presentPositionAngle += Math.sin(Number((objectiveAngle - object.presentPositionAngle))) * 0.1
+
+                        // object.presentPositionAngle = Number((object.presentPositionAngle + 0.01).toFixed(2))
+                        setTimeout(() => { follow(object, index) }, 1)
+                    }
+                    else if (object.presentPositionAngle.toFixed(2) > objectiveAngle) {
+                        // object.presentPositionAngle = Number((object.presentPositionAngle - 0.01).toFixed(2))
+                        object.presentPositionAngle += Math.sin(Number((objectiveAngle - object.presentPositionAngle))) * 0.1
+                        setTimeout(() => { follow(object, index) }, 1)
+                    }
+
                 }
                 follow(this, index)
                 // while (this.presentPositionAngle < index * Math.PI / 2) {
