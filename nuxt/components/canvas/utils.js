@@ -58,7 +58,7 @@ export function drawSector(canvas, x, y, radius, finishAngle, startAngle, fillSt
     path.arc(x, y, radius, startAngle, finishAngle, true)
     path.moveTo(x, y)
     ctx.fill(path)
-    ctx.stroke(path)
+    // ctx.stroke(path)
     ctx.restore()
     return path
 }

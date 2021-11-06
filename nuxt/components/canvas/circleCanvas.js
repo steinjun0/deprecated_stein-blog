@@ -12,7 +12,7 @@ export class CircleMenuCanvas extends VueCanvas {
         return Math.sin(theta) > 0 ? Math.sin(theta) : 0
     }
 
-    changeColor(theta, index) {
+    getDividerColor(theta, index) {
         if (angleConst[(0 + index) % 4] <= theta && theta < angleConst[(1 + index) % 4 === 0 ? 4 : (1 + index) % 4]) {
             // console.log('case 0')
             return 0
@@ -20,7 +20,7 @@ export class CircleMenuCanvas extends VueCanvas {
         else if (angleConst[(1 + index) % 4] <= theta && theta < angleConst[(2 + index) % 4 === 0 ? 4 : (2 + index) % 4]) {
             // console.log('case 1')
             // sin up
-            return Math.sin(theta - angleConst[1 + index])
+            return Math.sin(theta - angleConst[1 + index % 4])
         }
         else if (angleConst[(2 + index) % 4] <= theta && theta < angleConst[(3 + index) % 4 === 0 ? 4 : (3 + index) % 4]) {
             // console.log('case 2')
@@ -33,10 +33,40 @@ export class CircleMenuCanvas extends VueCanvas {
         }
     }
 
+    getChangingColor(theta, defaultColor, objectiveColor, index) {
+        let ratio = 0
+        if (angleConst[(0 + index) % 4] <= theta && theta < angleConst[(1 + index) % 4 === 0 ? 4 : (1 + index) % 4]) {
+            // console.log('case 0')
+            // sin down
+            ratio = Math.abs(Math.sin(theta + angleConst[(1 + index) % 4]))
+
+        }
+        else if (angleConst[(1 + index) % 4] <= theta && theta < angleConst[(2 + index) % 4 === 0 ? 4 : (2 + index) % 4]) {
+            // console.log('case 1')
+            ratio = 0
+        }
+        else if (angleConst[(2 + index) % 4] <= theta && theta < angleConst[(3 + index) % 4 === 0 ? 4 : (3 + index) % 4]) {
+            // console.log('case 2')
+            ratio = 0
+        }
+        else if (angleConst[(3 + index) % 4] <= theta && theta < angleConst[(4 + index) % 4 === 0 ? 4 : (4 + index) % 4]) {
+            // console.log('case 3')
+            // sin up
+            ratio = Math.abs(Math.sin(theta + angleConst[(1 + index) % 4]))
+        }
+        console.log(ratio)
+        return `rgba(${defaultColor[0] * (1 - ratio) + objectiveColor[0] * ratio},${defaultColor[1] * (1 - ratio) + objectiveColor[1] * ratio},${defaultColor[2] * (1 - ratio) + objectiveColor[2] * ratio})`
+    }
+
     draw(canvas, fillStyle = '#c4c4c4') {
         const ctx = canvas.getContext('2d')
         // drawCircle(canvas, canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, 0, Math.PI * 2, fillStyle = '#ffffff')
-        this.presentSectorPath = drawSector(canvas, canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, -Math.PI / 4 + this.presentPositionAngle, Math.PI / 4 + this.presentPositionAngle, '#222222')
+        this.presentSectorPath = drawSector(canvas,
+            canvas.width / 2,
+            canvas.height / 2,
+            canvas.width / 2 - 2,
+            -Math.PI / 4 + this.presentPositionAngle, Math.PI / 4 + this.presentPositionAngle,
+            this.getChangingColor(this.presentPositionAngle, [102, 102, 102], [0, 255, 0], 0))
 
         this.sectorPart[0] = drawSector(canvas, canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, -Math.PI / 4 + 0, Math.PI / 4 + 0, '#00000000', '#00000000')
         this.sectorPart[1] = drawSector(canvas, canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, -Math.PI / 4 + Math.PI / 2, Math.PI / 4 + Math.PI / 2, '#00000000', '#00000000')
@@ -44,11 +74,10 @@ export class CircleMenuCanvas extends VueCanvas {
         this.sectorPart[3] = drawSector(canvas, canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, -Math.PI / 4 + Math.PI * 3 / 2, Math.PI / 4 + Math.PI * 3 / 2, '#00000000', '#00000000')
 
 
-
         // 4시
         ctx.save()
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(104,104,104,${this.changeColor(this.presentPositionAngle, 0)})`
+        ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 0)})`
         ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(Math.PI / 4)) - 2, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(Math.PI / 4) - 2)
         ctx.lineTo(canvas.width / 2 * (1 + Math.cos(Math.PI / 4)) - 2, canvas.height / 2 + (canvas.width / 2) * Math.sin(Math.PI / 4) - 2)
         ctx.stroke();
@@ -58,7 +87,7 @@ export class CircleMenuCanvas extends VueCanvas {
         ctx.save()
         ctx.beginPath();
         // console.log('this.changeColor(this.presentPositionAngle, 1)', this.changeColor(this.presentPositionAngle, 1))
-        ctx.strokeStyle = `rgba(104,104,104,${this.changeColor(this.presentPositionAngle, 1)})`
+        ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 1)})`
         ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(Math.PI * 3 / 4)) + 4, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(Math.PI * 3 / 4) - 2)
         ctx.lineTo(canvas.width / 2 * (1 + Math.cos(Math.PI * 3 / 4)) + 4, canvas.height / 2 + (canvas.width / 2) * Math.sin(Math.PI * 3 / 4) - 2)
         ctx.stroke();
@@ -67,7 +96,7 @@ export class CircleMenuCanvas extends VueCanvas {
         // 10시
         ctx.save()
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(104,104,104,${this.changeColor(this.presentPositionAngle, 2)})`
+        ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 2)})`
         ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(Math.PI * 5 / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(Math.PI * 5 / 4) + 2)
         ctx.lineTo(canvas.width / 2 * (1 + Math.cos(Math.PI * 5 / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * Math.sin(Math.PI * 5 / 4) + 2)
         ctx.stroke();
@@ -76,24 +105,31 @@ export class CircleMenuCanvas extends VueCanvas {
         // 1시
         ctx.save()
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(104,104,104,${this.changeColor(this.presentPositionAngle, 3)})`
+        ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 3)})`
         ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(-Math.PI / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(-Math.PI / 4) + 1)
         ctx.lineTo(canvas.width / 2 * (1 + Math.cos(-Math.PI / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * Math.sin(-Math.PI / 4) + 1)
         ctx.stroke();
         ctx.restore()
 
-
-        ctx.save()
         ctx.font = '24px Noto Sans KR'
-        ctx.fillStyle = 'gray'
+        // ctx.fillStyle = 'gray'
         ctx.textAlign = 'center'
+        ctx.save()
+        ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, [102, 102, 102], [255, 255, 0], 0)
         ctx.fillText('Programming', canvas.width * 3 / 4 + 20, canvas.height / 2 + 9)
-        ctx.fillText('Music', canvas.width / 4 - 20, canvas.height / 2 + 9)
+        ctx.restore()
+        ctx.save()
+        ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, [102, 102, 102], [255, 255, 0], 1)
         ctx.fillText('Photos', canvas.width / 2, canvas.height * 3 / 4 + 20)
+        ctx.restore()
+        ctx.save()
+        ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, [102, 102, 102], [255, 255, 0], 2)
+        ctx.fillText('Music', canvas.width / 4 - 20, canvas.height / 2 + 9)
+        ctx.restore()
+        ctx.save()
+        ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, [102, 102, 102], [255, 255, 0], 3)
         ctx.fillText('About Me', canvas.width / 2, canvas.height / 4 + 12 - 20)
         ctx.restore()
-
-
     }
 
     getClickedSectorIndex(event) {
