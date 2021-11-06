@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex flex-column justify-space-between">
     <CardPostCard
       v-for="(data, index) in postCardsData"
       :key="index"
