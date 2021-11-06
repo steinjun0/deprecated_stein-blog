@@ -63,6 +63,20 @@ export function drawSector(canvas, x, y, radius, finishAngle, startAngle, fillSt
     return path
 }
 
+// export function drawText(canvas, x, y, text, fillStyle = '#c4c4c4', strokeStyle = '#c4c4c4') {
+//     const ctx = canvas.getContext('2d')
+//     const path = new Path2D()
+//     ctx.save()
+//     ctx.fillStyle = fillStyle
+//     ctx.strokeStyle = strokeStyle
+//     path.moveTo(x, y)
+//     path.arc(x, y, radius, startAngle, finishAngle, true)
+//     path.moveTo(x, y)
+//     ctx.fill(path)
+//     ctx.stroke(path)
+//     ctx.restore()
+//     return path
+// }
 // export function addDelayed(ref, objective) {
 //     console.log(ref)
 //     console.log(objective)

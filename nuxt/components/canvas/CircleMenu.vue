@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 100%; padding: 20px 60px">
+  <div style="width: 467px; height: 100%">
     <canvas id="circle-menu" style="width: 100%; height: 100%"></canvas>
   </div>
 </template>
