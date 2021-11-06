@@ -6,7 +6,7 @@
 
 <script>
 import { defineComponent, onMounted } from '@vue/composition-api'
-import { CircleMenuCanvas } from '~/components/canvas/utils'
+import { CircleMenuCanvas } from '~/components/canvas/circleCanvas'
 export default defineComponent({
   setup() {
     const mounted = () => {
