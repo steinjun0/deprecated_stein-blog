@@ -1,5 +1,5 @@
 
-import VueCanvas, { drawSector, angleConst } from './utils'
+import VueCanvas, { drawCircle, drawSector, angleConst } from './utils'
 export class CircleMenuCanvas extends VueCanvas {
     constructor(canvas) {
         super(canvas)
@@ -63,7 +63,7 @@ export class CircleMenuCanvas extends VueCanvas {
     }
 
     draw(canvas, fillStyle = '#c4c4c4') {
-        // drawCircle(canvas, canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, 0, Math.PI * 2, fillStyle = '#ffffff')
+        drawCircle(canvas, canvas.width / 2, canvas.height / 2, canvas.width / 2 - 2, 0, Math.PI * 2, '#ffffff', '#ffffff')
         this.index = Number((this.presentPositionAngle / angleConst[1]).toFixed(0))
         if (this.index >= 4) this.index = 0
         const lingrad = this.ctx.createLinearGradient(canvas.width / 2, canvas.height / 2, canvas.width / 2 + canvas.width / 2 * Math.cos(this.presentPositionAngle), canvas.height / 2 + canvas.width / 2 * (Math.sin(this.presentPositionAngle)))
@@ -86,7 +86,7 @@ export class CircleMenuCanvas extends VueCanvas {
         // 4시
         this.ctx.save()
         this.ctx.beginPath();
-        this.ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 0)})`
+        this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 0)})`
         this.ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(Math.PI / 4)) - 2, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(Math.PI / 4) - 2)
         this.ctx.lineTo(canvas.width / 2 * (1 + Math.cos(Math.PI / 4)) - 2, canvas.height / 2 + (canvas.width / 2) * Math.sin(Math.PI / 4) - 2)
         this.ctx.stroke();
@@ -96,7 +96,7 @@ export class CircleMenuCanvas extends VueCanvas {
         this.ctx.save()
         this.ctx.beginPath();
         // console.log('this.changeColor(this.presentPositionAngle, 1)', this.changeColor(this.presentPositionAngle, 1))
-        this.ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 1)})`
+        this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 1)})`
         this.ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(Math.PI * 3 / 4)) + 4, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(Math.PI * 3 / 4) - 2)
         this.ctx.lineTo(canvas.width / 2 * (1 + Math.cos(Math.PI * 3 / 4)) + 4, canvas.height / 2 + (canvas.width / 2) * Math.sin(Math.PI * 3 / 4) - 2)
         this.ctx.stroke();
@@ -105,7 +105,7 @@ export class CircleMenuCanvas extends VueCanvas {
         // 10시
         this.ctx.save()
         this.ctx.beginPath();
-        this.ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 2)})`
+        this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 2)})`
         this.ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(Math.PI * 5 / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(Math.PI * 5 / 4) + 2)
         this.ctx.lineTo(canvas.width / 2 * (1 + Math.cos(Math.PI * 5 / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * Math.sin(Math.PI * 5 / 4) + 2)
         this.ctx.stroke();
@@ -114,7 +114,7 @@ export class CircleMenuCanvas extends VueCanvas {
         // 1시
         this.ctx.save()
         this.ctx.beginPath();
-        this.ctx.strokeStyle = `rgba(104,104,104,${this.getDividerColor(this.presentPositionAngle, 3)})`
+        this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 3)})`
         this.ctx.moveTo(canvas.width / 2 * (1 + 0.8 * Math.cos(-Math.PI / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * 0.8 * Math.sin(-Math.PI / 4) + 1)
         this.ctx.lineTo(canvas.width / 2 * (1 + Math.cos(-Math.PI / 4)) - 1, canvas.height / 2 + (canvas.width / 2) * Math.sin(-Math.PI / 4) + 1)
         this.ctx.stroke();

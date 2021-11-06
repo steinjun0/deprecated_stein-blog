@@ -9,15 +9,26 @@
     <v-col cols="12" style="margin-bottom: 50px">
       <span style="font-size: 144px">stein.log</span>
     </v-col>
-    <v-col cols="12" class="d-flex flex-row" style="height: 601px">
-      <div>
-        <LeftPostCards />
+    <v-col
+      cols="12"
+      class="d-flex flex-row justify-space-between"
+      style="height: 601px"
+    >
+      <div style="overflow-y: hidden">
+        <LeftPostCards
+          style="position: relative"
+          :style="`bottom: ${
+            circleCanvas.presentPositionAngle
+              ? leftPostCardsBottom(circleCanvas.presentPositionAngle)
+              : 635
+          }px`"
+        />
       </div>
-      <div style="border-left: 1px solid #c4c4c4; margin: 0 80px"></div>
+      <div style="border-left: 1px solid #c4c4c4; margin: 0 60px"></div>
       <div>
-        <CanvasCircleMenu />
+        <CanvasCircleMenu @canvas="(value) => (circleCanvas = value)" />
       </div>
-      <div style="border-left: 1px solid #c4c4c4; margin: 0 80px"></div>
+      <div style="border-left: 1px solid #c4c4c4; margin: 0 60px"></div>
       <div class="d-flex flex-column">
         <v-img
           :src="require('@/assets/img/DapadaSample.gif')"
@@ -33,6 +44,17 @@
         <div style="border-bottom: 1px solid #c4c4c4; margin-top: 28px"></div>
       </div>
     </v-col>
+    <v-col
+      class="d-flex flex-row justify-space-between"
+      style="margin-top: 20px"
+    >
+      <div class="d-flex justify-center" style="width: 282px">
+        포스트 더보기<v-icon>mdi-chevron-right</v-icon>
+      </div>
+      <div class="d-flex justify-center" style="width: 282px">
+        작업물 더보기<v-icon>mdi-chevron-right</v-icon>
+      </div>
+    </v-col>
   </v-row>
 </template>
 <script>
@@ -44,6 +66,18 @@ export default defineComponent({
   },
   setup() {
     const show = ref(false)
+    const circleCanvas = ref({})
+    const leftPostCardsBottom = (presentPositionAngle) => {
+      let ratio = Number(presentPositionAngle.toFixed(2)) / 1.57
+      if (ratio > 3) {
+        ratio = ratio - 3
+      } else {
+        ratio = ratio + 1
+      }
+      console.log(ratio)
+      return 635 * ratio
+    }
+
     const delayFunction = (func, input = 100) => {
       return () => {
         setTimeout(func, input)
@@ -60,7 +94,7 @@ export default defineComponent({
       delayFunction(switchShow, 1000)
     })
 
-    return { show, switchShow }
+    return { show, switchShow, circleCanvas, leftPostCardsBottom }
   },
 })
 </script>

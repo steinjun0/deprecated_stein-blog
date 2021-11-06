@@ -8,19 +8,20 @@
 import { defineComponent, onMounted } from '@vue/composition-api'
 import { CircleMenuCanvas } from '~/components/canvas/circleCanvas'
 export default defineComponent({
-  setup() {
+  setup(props, { emit }) {
     const mounted = () => {
       const canvas = document.getElementById('circle-menu')
 
       const circleMenuCanvas = new CircleMenuCanvas(canvas)
       circleMenuCanvas.draw(circleMenuCanvas.canvas)
 
-      circleMenuCanvas.makeCanvasResponsive(() => {
-        circleMenuCanvas.draw(circleMenuCanvas.canvas)
-      })
+      // circleMenuCanvas.makeCanvasResponsive(() => {
+      //   circleMenuCanvas.draw(circleMenuCanvas.canvas)
+      // })
 
       circleMenuCanvas.animate(() => {
         circleMenuCanvas.draw(circleMenuCanvas.canvas)
+        emit('canvas', circleMenuCanvas)
       })
 
       canvas.addEventListener(
