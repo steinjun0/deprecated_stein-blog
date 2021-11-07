@@ -74,7 +74,6 @@ export default defineComponent({
       } else {
         ratio = ratio + 1
       }
-      console.log(ratio)
       return 635 * ratio
     }
 

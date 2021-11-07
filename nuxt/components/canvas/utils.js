@@ -1,4 +1,4 @@
-export const angleConst = [0, 1.57, 3.14, 4.71, 6.28]
+export const angleConst = [0, 1.57079, 3.14159, 4.71239, 6.28319]
 
 export default class VueCanvas {
     constructor(canvas) {
@@ -21,7 +21,6 @@ export default class VueCanvas {
     }
 
     animate(drawCanvas) {
-        window.requestAnimationFrame(this.animate.bind(this, drawCanvas, this.canvas)); // 재귀 함수 형태의 animation 함수
         // 이전 프레임을 지우기 위한 clearRect
         // canvas의 중심이 이동하기 때문에 넓은 범위로 삭제함
         // const ctx = canvas.getContext()
@@ -32,6 +31,10 @@ export default class VueCanvas {
             this.canvas.height * 4
         );
 
+        // setTimeout(() => {
+        //     window.requestAnimationFrame(this.animate.bind(this, drawCanvas, this.canvas)); // 재귀 함수 형태의 animation 함수
+        // }, 1000 / 60)
+        window.requestAnimationFrame(this.animate.bind(this, drawCanvas, this.canvas)); // 재귀 함수 형태의 animation 함수
         drawCanvas()
     }
 }
