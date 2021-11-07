@@ -1,33 +1,21 @@
 <template>
   <div class="d-flex flex-column justify-space-between">
     <div class="d-flex flex-column" style="height: 635px">
-      <span style="font-size: 24px" class="font-weight-medium"
+      <span
+        style="font-size: 24px; margin-bottom: 12px"
+        class="font-weight-medium"
         >Seok JunYoung</span
       >
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
+      <div
+        v-for="(history, index) in profile"
+        :key="index"
+        class="d-flex flex-column"
+      >
+        <span class="font-weight-medium" style="font-size: 18px">{{
+          history.group
+        }}</span>
+        <span>{{ history.detail }}</span>
+      </div>
     </div>
     <CardPostCard
       v-for="(data, index) in postCardsData"
@@ -38,33 +26,21 @@
       :style="index === postCardsData.length - 1 ? '' : 'margin-bottom: 56px'"
     />
     <div class="d-flex flex-column" style="margin-top: 56px">
-      <span style="font-size: 24px" class="font-weight-medium"
+      <span
+        style="font-size: 24px; margin-bottom: 12px"
+        class="font-weight-medium"
         >Seok JunYoung</span
       >
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
-      <span>Web Developer</span>
+      <div
+        v-for="(history, index) in profile"
+        :key="index"
+        class="d-flex flex-column"
+      >
+        <span class="font-weight-medium" style="font-size: 18px">{{
+          history.group
+        }}</span>
+        <span>{{ history.detail }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -122,7 +98,15 @@ export default defineComponent({
         subtitle: '2017년의 서울',
       },
     ]
-    return { postCardsData }
+    const profile = ref([
+      {
+        group: 'University of SEOUL',
+        detail: 'Electronics and Computer Engineering',
+      },
+      { group: 'DACON', detail: 'Front-End Developer' },
+      { group: 'DAPADA', detail: 'Web Developer' },
+    ])
+    return { postCardsData, profile }
   },
 })
 </script>
