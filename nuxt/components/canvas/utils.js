@@ -5,6 +5,8 @@ export default class VueCanvas {
         this.canvas = canvas
         this.ctx = canvas.getContext('2d')
         this.responseCanvasSize()
+        this.canvasWidth = canvas.width
+        this.canvasHeight = canvas.height
     }
 
     responseCanvasSize() {
@@ -17,6 +19,8 @@ export default class VueCanvas {
         window.addEventListener('resize', () => {
             this.responseCanvasSize()
             drawCanvas()
+            this.canvasWidth = this.canvas.width
+            this.canvasHeight = this.canvas.height
         })
     }
 
@@ -25,10 +29,10 @@ export default class VueCanvas {
         // canvas의 중심이 이동하기 때문에 넓은 범위로 삭제함
         // const ctx = canvas.getContext()
         this.canvas.getContext('2d').clearRect(
-            -this.canvas.width * 2,
-            -this.canvas.height * 2,
-            this.canvas.width * 4,
-            this.canvas.height * 4
+            -this.canvasWidth * 2,
+            -this.canvasHeight * 2,
+            this.canvasWidth * 4,
+            this.canvasHeight * 4
         );
 
         // setTimeout(() => {

@@ -69,38 +69,36 @@ export default class CircleMenuCanvas extends VueCanvas {
     }
 
     draw(canvas, fillStyle = '#c4c4c4') {
-        const canvasWidth = canvas.width
-        const canvasHeight = canvas.height
         // drawCircle(canvas, canvasWidth / 2, canvasHeight / 2, canvasWidth / 2 - 2, 0, Math.PI * 2, '#ffffff', '#ffffff')
         this.index = Number((this.presentPositionAngle / angleConst[1]).toFixed(0))
         if (this.index >= 4) this.index = 0
         const lingrad = this.ctx.createLinearGradient(
-            canvasWidth / 2,
-            canvasHeight / 2,
-            canvasWidth / 2 + canvasWidth / 2 * this.cos(this.presentPositionAngle),
-            canvasHeight / 2 + canvasWidth / 2 * (this.sin(this.presentPositionAngle)))
+            this.canvasWidth / 2,
+            this.canvasHeight / 2,
+            this.canvasWidth / 2 + this.canvasWidth / 2 * this.cos(this.presentPositionAngle),
+            this.canvasHeight / 2 + this.canvasWidth / 2 * (this.sin(this.presentPositionAngle)))
         lingrad.addColorStop(0, this.getChangingColor(this.presentPositionAngle, [102, 102, 102], this.sectorColors[this.index], this.index))
         lingrad.addColorStop(0.5, 'rgba(0,0,0,1)')
         this.presentSectorPath = drawSector(canvas,
-            canvasWidth / 2,
-            canvasHeight / 2,
-            canvasWidth / 2 - 2,
+            this.canvasWidth / 2,
+            this.canvasHeight / 2,
+            this.canvasWidth / 2 - 2,
             -Math.PI / 4 + this.presentPositionAngle, Math.PI / 4 + this.presentPositionAngle,
             lingrad)
 
 
-        this.sectorPart[0] = drawSector(canvas, canvasWidth / 2, canvasHeight / 2, canvasWidth / 2 - 2, -Math.PI / 4 + 0, Math.PI / 4 + 0, '#00000000', '#00000000')
-        this.sectorPart[1] = drawSector(canvas, canvasWidth / 2, canvasHeight / 2, canvasWidth / 2 - 2, -Math.PI / 4 + Math.PI / 2, Math.PI / 4 + Math.PI / 2, '#00000000', '#00000000')
-        this.sectorPart[2] = drawSector(canvas, canvasWidth / 2, canvasHeight / 2, canvasWidth / 2 - 2, -Math.PI / 4 + Math.PI, Math.PI / 4 + Math.PI, '#00000000', '#00000000')
-        this.sectorPart[3] = drawSector(canvas, canvasWidth / 2, canvasHeight / 2, canvasWidth / 2 - 2, -Math.PI / 4 + Math.PI * 3 / 2, Math.PI / 4 + Math.PI * 3 / 2, '#00000000', '#00000000')
+        this.sectorPart[0] = drawSector(canvas, this.canvasWidth / 2, this.canvasHeight / 2, this.canvasWidth / 2 - 2, -Math.PI / 4 + 0, Math.PI / 4 + 0, '#00000000', '#00000000')
+        this.sectorPart[1] = drawSector(canvas, this.canvasWidth / 2, this.canvasHeight / 2, this.canvasWidth / 2 - 2, -Math.PI / 4 + Math.PI / 2, Math.PI / 4 + Math.PI / 2, '#00000000', '#00000000')
+        this.sectorPart[2] = drawSector(canvas, this.canvasWidth / 2, this.canvasHeight / 2, this.canvasWidth / 2 - 2, -Math.PI / 4 + Math.PI, Math.PI / 4 + Math.PI, '#00000000', '#00000000')
+        this.sectorPart[3] = drawSector(canvas, this.canvasWidth / 2, this.canvasHeight / 2, this.canvasWidth / 2 - 2, -Math.PI / 4 + Math.PI * 3 / 2, Math.PI / 4 + Math.PI * 3 / 2, '#00000000', '#00000000')
 
 
         // 4시
         this.ctx.save()
         this.ctx.beginPath();
         this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 0)})`
-        this.ctx.moveTo(canvasWidth / 2 * (1 + 0.8 * this.cos(Math.PI / 4)) - 2, canvasHeight / 2 + (canvasWidth / 2) * 0.8 * this.sin(Math.PI / 4) - 2)
-        this.ctx.lineTo(canvasWidth / 2 * (1 + this.cos(Math.PI / 4)) - 2, canvasHeight / 2 + (canvasWidth / 2) * this.sin(Math.PI / 4) - 2)
+        this.ctx.moveTo(this.canvasWidth / 2 * (1 + 0.8 * this.cos(Math.PI / 4)) - 2, this.canvasHeight / 2 + (this.canvasWidth / 2) * 0.8 * this.sin(Math.PI / 4) - 2)
+        this.ctx.lineTo(this.canvasWidth / 2 * (1 + this.cos(Math.PI / 4)) - 2, this.canvasHeight / 2 + (this.canvasWidth / 2) * this.sin(Math.PI / 4) - 2)
         this.ctx.stroke();
         this.ctx.restore()
 
@@ -109,8 +107,8 @@ export default class CircleMenuCanvas extends VueCanvas {
         this.ctx.beginPath();
         // console.log('this.changeColor(this.presentPositionAngle, 1)', this.changeColor(this.presentPositionAngle, 1))
         this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 1)})`
-        this.ctx.moveTo(canvasWidth / 2 * (1 + 0.8 * this.cos(Math.PI * 3 / 4)) + 4, canvasHeight / 2 + (canvasWidth / 2) * 0.8 * this.sin(Math.PI * 3 / 4) - 2)
-        this.ctx.lineTo(canvasWidth / 2 * (1 + this.cos(Math.PI * 3 / 4)) + 4, canvasHeight / 2 + (canvasWidth / 2) * this.sin(Math.PI * 3 / 4) - 2)
+        this.ctx.moveTo(this.canvasWidth / 2 * (1 + 0.8 * this.cos(Math.PI * 3 / 4)) + 4, this.canvasHeight / 2 + (this.canvasWidth / 2) * 0.8 * this.sin(Math.PI * 3 / 4) - 2)
+        this.ctx.lineTo(this.canvasWidth / 2 * (1 + this.cos(Math.PI * 3 / 4)) + 4, this.canvasHeight / 2 + (this.canvasWidth / 2) * this.sin(Math.PI * 3 / 4) - 2)
         this.ctx.stroke();
         this.ctx.restore()
 
@@ -118,8 +116,8 @@ export default class CircleMenuCanvas extends VueCanvas {
         this.ctx.save()
         this.ctx.beginPath();
         this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 2)})`
-        this.ctx.moveTo(canvasWidth / 2 * (1 + 0.8 * this.cos(Math.PI * 5 / 4)) - 1, canvasHeight / 2 + (canvasWidth / 2) * 0.8 * this.sin(Math.PI * 5 / 4) + 2)
-        this.ctx.lineTo(canvasWidth / 2 * (1 + this.cos(Math.PI * 5 / 4)) - 1, canvasHeight / 2 + (canvasWidth / 2) * this.sin(Math.PI * 5 / 4) + 2)
+        this.ctx.moveTo(this.canvasWidth / 2 * (1 + 0.8 * this.cos(Math.PI * 5 / 4)) - 1, this.canvasHeight / 2 + (this.canvasWidth / 2) * 0.8 * this.sin(Math.PI * 5 / 4) + 2)
+        this.ctx.lineTo(this.canvasWidth / 2 * (1 + this.cos(Math.PI * 5 / 4)) - 1, this.canvasHeight / 2 + (this.canvasWidth / 2) * this.sin(Math.PI * 5 / 4) + 2)
         this.ctx.stroke();
         this.ctx.restore()
 
@@ -127,8 +125,8 @@ export default class CircleMenuCanvas extends VueCanvas {
         this.ctx.save()
         this.ctx.beginPath();
         this.ctx.strokeStyle = `rgba(196,196,196,${this.getDividerColor(this.presentPositionAngle, 3)})`
-        this.ctx.moveTo(canvasWidth / 2 * (1 + 0.8 * this.cos(-Math.PI / 4)) - 1, canvasHeight / 2 + (canvasWidth / 2) * 0.8 * this.sin(-Math.PI / 4) + 1)
-        this.ctx.lineTo(canvasWidth / 2 * (1 + this.cos(-Math.PI / 4)) - 1, canvasHeight / 2 + (canvasWidth / 2) * this.sin(-Math.PI / 4) + 1)
+        this.ctx.moveTo(this.canvasWidth / 2 * (1 + 0.8 * this.cos(-Math.PI / 4)) - 1, this.canvasHeight / 2 + (this.canvasWidth / 2) * 0.8 * this.sin(-Math.PI / 4) + 1)
+        this.ctx.lineTo(this.canvasWidth / 2 * (1 + this.cos(-Math.PI / 4)) - 1, this.canvasHeight / 2 + (this.canvasWidth / 2) * this.sin(-Math.PI / 4) + 1)
         this.ctx.stroke();
         this.ctx.restore()
 
@@ -137,19 +135,19 @@ export default class CircleMenuCanvas extends VueCanvas {
         this.ctx.textAlign = 'center'
         this.ctx.save()
         this.ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, this.defaultTextColors[0], this.sectorTextColors[0], 0)
-        this.ctx.fillText('Programming', canvasWidth * 3 / 4 + 20, canvasHeight / 2 + 9)
+        this.ctx.fillText('Programming', this.canvasWidth * 3 / 4 + 20, this.canvasHeight / 2 + 9)
         this.ctx.restore()
         this.ctx.save()
         this.ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, this.defaultTextColors[1], this.sectorTextColors[1], 1)
-        this.ctx.fillText('Camera', canvasWidth / 2, canvasHeight * 3 / 4 + 20)
+        this.ctx.fillText('Camera', this.canvasWidth / 2, this.canvasHeight * 3 / 4 + 20)
         this.ctx.restore()
         this.ctx.save()
         this.ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, this.defaultTextColors[2], this.sectorTextColors[2], 2)
-        this.ctx.fillText('Music', canvasWidth / 4 - 20, canvasHeight / 2 + 9)
+        this.ctx.fillText('Music', this.canvasWidth / 4 - 20, this.canvasHeight / 2 + 9)
         this.ctx.restore()
         this.ctx.save()
         this.ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, this.defaultTextColors[3], this.sectorTextColors[3], 3)
-        this.ctx.fillText('About Me', canvasWidth / 2, canvasHeight / 4 + 12 - 20)
+        this.ctx.fillText('About Me', this.canvasWidth / 2, this.canvasHeight / 4 + 12 - 20)
         this.ctx.restore()
     }
 
