@@ -6,6 +6,7 @@
       width: 282px;
       height: 155px;
       color: #373737;
+      cursor: pointer;
     "
   >
     <span style="font-size: 14px">{{ category }}</span>
