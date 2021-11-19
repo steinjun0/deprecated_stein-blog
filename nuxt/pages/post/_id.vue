@@ -51,17 +51,20 @@
     >
       <v-row style="padding-left: 20px">
         <v-col style="color: #686868">
-          <div
-            v-for="(menu, index) in menuList"
-            :key="index"
-            style="margin-bottom: 8px"
-          >
-            <span v-if="menu.type === 'main'" class="font-weight-medium">
+          <div v-for="(menu, index) in menuList" :key="index">
+            <div
+              v-if="menu.type === 'main'"
+              class="font-weight-medium"
+              style="margin-bottom: 8px"
+            >
               {{ menu.text }}
-            </span>
-            <span v-else style="font-size: 14px; margin-left: 12px">
+            </div>
+            <div
+              v-else
+              style="font-size: 14px; margin-left: 12px; margin-bottom: 16px"
+            >
               {{ menu.text }}
-            </span>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -76,7 +79,7 @@ export default defineComponent({
   setup() {
     const menuList = ref([
       { text: 'Total', type: 'main' },
-      { text: 'Programming', type: 'sub' },
+      { text: 'Programming', type: 'main' },
       { text: 'Front', type: 'sub' },
       { text: 'Back', type: 'sub' },
       { text: 'DevOps', type: 'sub' },
