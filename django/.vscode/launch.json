@@ -15,7 +15,7 @@
       "name": "Python: gunicorn",
       "type": "python",
       "request": "launch",
-      "cwd": "/home/webcompose/django/webcompose",
+      "cwd": "/home/web-compose/django/webcompose",
       "program": "/usr/local/bin/gunicorn",
       "args": [
         "webcompose.wsgi:application",
