@@ -161,7 +161,7 @@ export default {
   },
   async postCategory(category) {
     const loginRes = await this.postAxios(
-      `${process.env.API_URL}api/blog/categories`,
+      `${process.env.API_URL}api/blog/categories/`,
       category
     )
     return loginRes
