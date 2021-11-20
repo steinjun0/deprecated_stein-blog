@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from rest_framework.permissions import IsAdminUser, AllowAny
 from django.contrib import admin
 from django.urls import path, include, re_path
 
@@ -24,6 +25,10 @@ from rest_framework import serializers as rest_serializers
 from . import models
 from . import views
 from . import serializers
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
+from rest_framework import status
 
 # Serializers define the API representation.
 
@@ -49,6 +54,32 @@ class PostViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
+    permission_classes = [AllowAny]
+
+    def get_permissions(self):
+        return [permission() for permission in [AllowAny]]
+
+    def create(self, request):
+        try:
+            new_category = None
+            if request.data['type'] == 'sub':
+                parent = models.Category.objects.get(
+                    id=request.data['parentId'])
+                if len(models.Category.objects.filter(name=request.data['name'], type=request.data['type'], parent=parent)) == 0:
+                    new_category = models.Category(
+                        name=request.data['name'], type=request.data['type'], parent=parent)
+            else:
+                if len(models.Category.objects.filter(
+                        name=request.data['name'], type=request.data['type'])):
+                    new_category = models.Category(
+                        name=request.data['name'], type=request.data['type'])
+            if not (new_category is None):
+                new_category.save()
+                return Response({'id': new_category.id, 'name': new_category.name, 'type': new_category.type})
+            else:
+                return Response('이미 존재하는 카테고리입니다.', status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            raise ValidationError(detail=f'에러 발생: {e}')
 
 
 # Routers provide an easy way of automatically determining the URL conf.
