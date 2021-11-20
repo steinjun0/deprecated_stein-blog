@@ -1,8 +1,23 @@
 from os import read
 from django.contrib.auth.models import User, Group
-from blog import views
+# from blog import views
+from blog import models
 from rest_framework import serializers
 
+
+class PostSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Post
+        fields = ['title', 'sub_title', 'html',
+                  'created_at', 'modified_at', 'categories']
+
+
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    parent = serializers.StringRelatedField()
+
+    class Meta:
+        model = models.Category
+        fields = ['name', 'type', 'parent']
 
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
@@ -33,7 +48,7 @@ from rest_framework import serializers
 # class SectorSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = Sector
-#         fields = ['name']        
+#         fields = ['name']
 
 # class ReporterSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
@@ -60,10 +75,10 @@ from rest_framework import serializers
 #     # group_name = serializers.CharField(source='publish_cmp.company_group.name')
 #     # group_id = serializers.CharField(source='publish_cmp.company_group.id')
 #     # group_name = serializers.CharField(company_group)
-    
+
 #     # close = serializers.IntegerField(source='ohlcv.close')
 #     class Meta:
 #         model = ShareAnnounce
-#         fields = ('publish_cmp_name','publish_cmp_code', 'reporter_name','report_reason', 
+#         fields = ('publish_cmp_name','publish_cmp_code', 'reporter_name','report_reason',
 #                 'date', 'stock_sort', 'ratio', 'before_share',
 #                 'difference', 'share_after','ohlcv','company_group',)
