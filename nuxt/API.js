@@ -153,21 +153,21 @@ export default {
   },
 
   // api start
-  async getSectors(reporterName = undefined, sectorName = undefined, companyName = undefined, latest = false) {
-    const shareAnnounceRes = await this.getAxios(
-      `${process.env.API_URL}/api/share/sectors`
+  async getCategories() {
+    const categoriesRes = await this.getAxios(
+      `${process.env.API_URL}api/blog/categories`
     )
-    return shareAnnounceRes
+    return categoriesRes
   },
-  async postTask(taskData) {
-    const loginRes = await this.postAxiosFormData(
-      `${process.env.API_URL}task/tasks`,
-      taskData
+  async postCategory(category) {
+    const loginRes = await this.postAxios(
+      `${process.env.API_URL}api/blog/categories`,
+      category
     )
     return loginRes
   },
   async postProfile(img) {
-    const postProfileRes = await this.postAxios(
+    const postProfileRes = await this.postAxiosFormData(
       `${process.env.API_URL}auth/profile/`,
       img
     )
