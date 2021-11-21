@@ -1,11 +1,5 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col>
-      <!-- <v-btn @click="switchShow">{{ show }}</v-btn>
-      <TransientCard :show="show">
-        <span>안녕하세요</span>
-      </TransientCard> -->
-    </v-col>
     <v-col cols="12" style="margin-bottom: 50px">
       <span style="font-size: 80px; font-weight: 500">stein.log</span>
     </v-col>
@@ -66,12 +60,14 @@
 <script>
 import { defineComponent, ref, onMounted } from '@vue/composition-api'
 import LeftPostCards from './index/LeftPostCards.vue'
+import { ViewSetAPI } from '@/API'
+const PostAPI = new ViewSetAPI('blog/post')
+
 export default defineComponent({
   components: {
     LeftPostCards,
   },
   setup() {
-    const show = ref(false)
     const circleCanvas = ref({})
     const leftPostCardsBottom = (presentPositionAngle) => {
       let ratio = Number(presentPositionAngle.toFixed(2)) / 1.57
@@ -83,23 +79,12 @@ export default defineComponent({
       return 635 * ratio
     }
 
-    const delayFunction = (func, input = 100) => {
-      return () => {
-        setTimeout(func, input)
-      }
-    }
-    const switchShow = (input = undefined) => {
-      if (typeof input !== 'boolean') {
-        show.value = !show.value
-      } else {
-        show.value = input
-      }
-    }
-    onMounted(() => {
-      delayFunction(switchShow, 1000)
+    onMounted(async () => {
+      const res = await PostAPI.getAxios()
+      console.log(res)
     })
 
-    return { show, switchShow, circleCanvas, leftPostCardsBottom }
+    return { circleCanvas, leftPostCardsBottom }
   },
 })
 </script>

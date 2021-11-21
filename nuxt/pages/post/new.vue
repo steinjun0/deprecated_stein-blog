@@ -73,24 +73,18 @@ export default defineComponent({
     })
     const toastuiEditor = ref(null)
     onMounted(async () => {
-      console.log(swal)
-      swal.success(currentInstance, 'hihi')
       categories.value = await CategoryAPI.getAxios()
-      // categories.value = []
-      // categoriesRes.forEach((element) => {
-      //   categories.value.push(element.name)
-      // })
     })
     const getHTML = () => {
       post.html = toastuiEditor.value.invoke('getHTML')
     }
     const savePost = async () => {
       getHTML()
-      await PostAPI.postAxios(post)
+      const res = await PostAPI.postAxios(post)
+      swal.apiResponse(currentInstance, res, '게시글이 저장되었습니다.')
     }
     watch(selectedCategory, (val) => {
       let alreadyExist = false
-      // console.log(val)
       selectedCategories.value.forEach((element) => {
         if (element === val) {
           alreadyExist = true
@@ -101,7 +95,6 @@ export default defineComponent({
       }
       const selectedCategoriesIds = []
       categories.value.forEach((element) => {
-        console.log('element.name', element.name)
         if (selectedCategories.value.includes(element.name)) {
           selectedCategoriesIds.push(element.id)
         }
