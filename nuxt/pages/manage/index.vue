@@ -20,7 +20,7 @@
         ></v-select>
         <v-select
           v-model="tempNewCategoryParent"
-          label="type"
+          label="parent"
           required
           :items="parentsName"
         ></v-select>
@@ -41,7 +41,8 @@ import {
   computed,
   watch,
 } from '@vue/composition-api'
-import API from '@/API'
+import { ViewSetAPI } from '@/API'
+const CateogoryAPI = new ViewSetAPI('blog/category')
 export default defineComponent({
   setup() {
     const categories = ref([])
@@ -64,7 +65,7 @@ export default defineComponent({
       }
     })
     onMounted(async () => {
-      categories.value = await API.getCategories()
+      categories.value = await CateogoryAPI.getAxios()
     })
     const parentsName = computed(() => {
       const result = ['No Parent']
@@ -76,7 +77,9 @@ export default defineComponent({
       return result
     })
     const createCategory = async () => {
-      await API.postCategory(newCategory.value)
+      console.log('newCategory.value', newCategory)
+      await CateogoryAPI.postAxios(newCategory)
+      categories.value = await CateogoryAPI.getAxios()
     }
     return {
       categories,
