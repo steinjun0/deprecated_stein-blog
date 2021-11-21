@@ -20,53 +20,100 @@
           :items="categories"
           item-text="name"
         ></v-select>
-        <v-text-field placeholder="제목 입력"></v-text-field>
+        <v-text-field
+          v-model="post.title"
+          placeholder="제목 입력"
+        ></v-text-field>
+        <v-text-field
+          v-model="post.sub_title"
+          placeholder="부제목 입력"
+        ></v-text-field>
       </v-col>
       <v-col cols="12">
         <client-only>
-          <editor ref="editor" :initial-value="text" align="left"> </editor>
+          <editor ref="toastuiEditor" :initial-value="text" align="left">
+          </editor>
           <viewer v-if="toggle" :initial-value="text"></viewer>
         </client-only>
+      </v-col>
+      <v-col>
+        <v-btn @click="savePost">저장</v-btn>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, watch } from '@vue/composition-api'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  watch,
+  reactive,
+} from '@vue/composition-api'
 import { ViewSetAPI } from '@/API'
-const CateogoryAPI = new ViewSetAPI('blog/category')
+const PostAPI = new ViewSetAPI('blog/post')
+const CategoryAPI = new ViewSetAPI('blog/category')
 
 export default defineComponent({
-  setup() {
+  setup({ refs }) {
     const categories = ref([])
     const text = ref('이곳에 글을 써주세요')
     const toggle = ref('false')
     const selectedCategory = ref('')
     const selectedCategories = ref([])
+    const post = reactive({
+      title: '',
+      sub_title: '',
+      html: '',
+      categories: [],
+    })
+    const toastuiEditor = ref(null)
     onMounted(async () => {
-      categories.value = await CateogoryAPI.getAxios()
+      categories.value = await CategoryAPI.getAxios()
       // categories.value = []
       // categoriesRes.forEach((element) => {
       //   categories.value.push(element.name)
       // })
     })
+    const getHTML = () => {
+      post.html = toastuiEditor.value.invoke('getHTML')
+    }
+    const savePost = async () => {
+      getHTML()
+      await PostAPI.postAxios(post)
+    }
     watch(selectedCategory, (val) => {
       let alreadyExist = false
       // console.log(val)
-      console.log('watch!!')
       selectedCategories.value.forEach((element) => {
-        console.log(element)
         if (element === val) {
           alreadyExist = true
         }
       })
-      console.log('alreadyExist', alreadyExist)
       if (!alreadyExist) {
         selectedCategories.value.push(val)
       }
+      const selectedCategoriesIds = []
+      categories.value.forEach((element) => {
+        console.log('element.name', element.name)
+        if (selectedCategories.value.includes(element.name)) {
+          selectedCategoriesIds.push(element.id)
+        }
+      })
+      post.categories = selectedCategoriesIds
     })
-    return { categories, text, toggle, selectedCategory, selectedCategories }
+    return {
+      categories,
+      text,
+      toggle,
+      selectedCategory,
+      selectedCategories,
+      post,
+      savePost,
+      getHTML,
+      toastuiEditor,
+    }
   },
 })
 </script>
