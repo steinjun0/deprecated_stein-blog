@@ -10,6 +10,7 @@ if (user !== null) {
 } else {
   tokenHeader = false
 }
+
 export default {
   refreshUserData() {
     user = JSON.parse(localStorage.getItem('userData'))
@@ -186,4 +187,171 @@ export default {
     )
     return deleteRes
   },
+}
+
+export class ViewSetAPI {
+  constructor(viewSet) {
+    this.prefixUrl = `${process.env.API_URL}api/${viewSet}/`
+  }
+
+  refreshUserData() {
+    user = JSON.parse(localStorage.getItem('userData'))
+    if (user !== null) {
+      tokenHeader = { headers: { Authorization: `Bearer ${user.token}` } }
+    } else {
+      tokenHeader = false
+    }
+  }
+
+  async getAxios(url = this.prefixUrl) {
+    this.refreshUserData()
+    try {
+      const res = tokenHeader
+        ? await axios.get(url, tokenHeader)
+        : await axios.get(url, tokenHeader)
+      return res.data
+    } catch (e) {
+      // console.log(e);
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async getAxiosZip(url = this.prefixUrl) {
+    this.refreshUserData()
+    try {
+      const res = user.token
+        ? await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            accept: 'application/x-zip-compressed',
+          },
+        })
+        : await axios.get(url, {
+          headers: { accept: 'application/x-zip-compressed' },
+        })
+      return res.data
+    } catch (e) {
+      // console.log(e);
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async getAxiosWithParams(param, url = this.prefixUrl) {
+    this.refreshUserData()
+    try {
+      const res = await axios.get(
+        url,
+        {
+          params: param,
+        },
+        tokenHeader
+      )
+      return res.data
+    } catch (e) {
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async postAxios(data) {
+    const url = this.prefixUrl
+    this.refreshUserData()
+    try {
+      const res = tokenHeader
+        ? await axios.post(url, data, tokenHeader)
+        : await axios.post(url, data)
+      return res.data
+    } catch (e) {
+      // console.log(e);
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async postAxiosFormData(data) {
+    const url = this.prefixUrl
+
+    this.refreshUserData()
+    try {
+      const res = user.token
+        ? await axios.post(url, data, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        : await axios.post(url, data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+      return res.data
+    } catch (e) {
+      // console.log(e)
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async patchAxios(key, data) {
+    const url = this.prefixUrl + `${key}/`
+
+    this.refreshUserData()
+    try {
+      const res = tokenHeader
+        ? await axios.patch(url, data, tokenHeader)
+        : await axios.patch(url, data)
+      return res.data
+    } catch (e) {
+      // console.log(e);
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async patchAxiosFormData(key, data) {
+    const url = this.prefixUrl + `${key}/`
+
+    this.refreshUserData()
+    try {
+      const res = user.token
+        ? await axios.patch(url, data, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        : await axios.patch(url, data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+      return res.data
+    } catch (e) {
+      // console.log(e)
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async putAxios(key) {
+    const url = this.prefixUrl + `${key}/`
+
+    this.refreshUserData()
+    try {
+      const res = tokenHeader
+        ? await axios.put(url, tokenHeader)
+        : await axios.put(url)
+      return res.data
+    } catch (e) {
+      // console.log(e);
+      return { error: e.response.data.errors || e }
+    }
+  }
+
+  async deleteAxios(key) {
+    const url = this.prefixUrl + `${key}/`
+
+    this.refreshUserData()
+    try {
+      const res = tokenHeader
+        ? await axios.delete(url, tokenHeader)
+        : await axios.delete(url)
+      return res
+    } catch (e) {
+      // console.log(e);
+      return { error: e.response.data.errors || e }
+    }
+  }
 }
