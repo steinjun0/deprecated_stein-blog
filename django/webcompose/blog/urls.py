@@ -29,6 +29,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
+import json
 
 # Serializers define the API representation.
 
@@ -49,6 +50,19 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostSerializer
+
+    def create(self, request):
+
+        post = models.Post(title=request.data['title'], sub_title=request.data['sub_title'],
+                           html=request.data['html'])
+        post.save()
+
+        categories = []
+        for pk in request.data['categories']:
+            category = models.Category.objects.get(id=pk)
+            post.categories.add(category)
+            categories.append(category.name)
+        return Response({'title': post.title, 'sub_title': post.sub_title, 'html': post.html, 'categories': json.dumps(categories)})
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
