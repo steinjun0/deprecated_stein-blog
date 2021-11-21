@@ -46,6 +46,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/dotenv',
     '@nuxtjs/google-fonts',
+    'vue-sweetalert2/nuxt'
   ],
 
   googleFonts: {

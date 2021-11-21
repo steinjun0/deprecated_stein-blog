@@ -50,13 +50,16 @@ import {
   onMounted,
   watch,
   reactive,
+  getCurrentInstance,
 } from '@vue/composition-api'
 import { ViewSetAPI } from '@/API'
+import swal from '@/plugins/sweet-alerts'
 const PostAPI = new ViewSetAPI('blog/post')
 const CategoryAPI = new ViewSetAPI('blog/category')
 
 export default defineComponent({
-  setup({ refs }) {
+  setup() {
+    const currentInstance = getCurrentInstance()
     const categories = ref([])
     const text = ref('이곳에 글을 써주세요')
     const toggle = ref('false')
@@ -70,6 +73,8 @@ export default defineComponent({
     })
     const toastuiEditor = ref(null)
     onMounted(async () => {
+      console.log(swal)
+      swal.success(currentInstance, 'hihi')
       categories.value = await CategoryAPI.getAxios()
       // categories.value = []
       // categoriesRes.forEach((element) => {
@@ -117,8 +122,3 @@ export default defineComponent({
   },
 })
 </script>
-
-
-
-<style>
-</style>
