@@ -5,6 +5,12 @@ from blog import models
 from rest_framework import serializers
 
 
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'is_staff']
+
+
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Post
