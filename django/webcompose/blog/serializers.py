@@ -11,19 +11,22 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'username', 'email', 'is_staff']
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = models.Post
-        fields = ['title', 'sub_title', 'html',
-                  'created_at', 'modified_at', 'categories']
-
-
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     parent = serializers.StringRelatedField()
 
     class Meta:
         model = models.Category
         fields = ['id', 'name', 'type', 'parent']
+
+
+class PostSerializer(serializers.HyperlinkedModelSerializer):
+    category = CategorySerializer(read_only=True, many=True)
+
+    class Meta:
+        model = models.Post
+        fields = ['title', 'sub_title', 'html',
+                  'created_at', 'modified_at', 'category']
+
 
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:

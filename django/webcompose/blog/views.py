@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from rest_framework import status, viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.decorators import action
 
 import json
 
@@ -52,6 +53,13 @@ class PostViewSet(viewsets.ModelViewSet):
             post.categories.add(category)
             categories.append(category.name)
         return Response({'title': post.title, 'sub_title': post.sub_title, 'html': post.html, 'categories': json.dumps(categories)})
+
+    @action(detail=False, methods=['get'])
+    def get_main_page_list(self, request):
+        posts = models.Post.objects.all()
+        serializer = serializers.PostSerializer(
+            posts, many=True)
+        return Response(serializer.data)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
