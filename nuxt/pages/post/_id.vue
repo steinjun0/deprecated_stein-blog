@@ -49,7 +49,7 @@
     <div
       style="margin: 218px 0 0 73px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
     >
-      <v-row style="padding-left: 20px">
+      <v-row style="padding-left: 40px">
         <v-col style="color: #686868">
           <div v-for="(menu, index) in menuList" :key="index">
             <div
