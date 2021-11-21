@@ -1,5 +1,5 @@
 
-import VueCanvas, { drawSector, angleConst } from './utils'
+import VueCanvas, { drawSector, angleConst, drawCircle } from './utils'
 export default class CircleMenuCanvas extends VueCanvas {
     constructor(canvas) {
         super(canvas)
@@ -69,7 +69,7 @@ export default class CircleMenuCanvas extends VueCanvas {
     }
 
     draw(canvas, fillStyle = '#c4c4c4') {
-        // drawCircle(canvas, canvasWidth / 2, canvasHeight / 2, canvasWidth / 2 - 2, 0, Math.PI * 2, '#ffffff', '#ffffff')
+        drawCircle(canvas, this.canvasWidth / 2, this.canvasHeight / 2, this.canvasWidth / 2 - 2, 0, Math.PI * 2, '#fafafa', '#ffffff')
         this.index = Number((this.presentPositionAngle / angleConst[1]).toFixed(0))
         if (this.index >= 4) this.index = 0
         const lingrad = this.ctx.createLinearGradient(
@@ -131,7 +131,7 @@ export default class CircleMenuCanvas extends VueCanvas {
         this.ctx.restore()
 
         this.ctx.font = '24px Noto Sans KR'
-        // ctx.fillStyle = 'gray'
+        // this.ctx.fillStyle = 'gray'
         this.ctx.textAlign = 'center'
         this.ctx.save()
         this.ctx.fillStyle = this.getChangingColor(this.presentPositionAngle, this.defaultTextColors[0], this.sectorTextColors[0], 0)

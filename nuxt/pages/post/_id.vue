@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex flex-row">
     <div>
-      <v-row style="max-width: 923px">
+      <v-row style="max-width: 946px">
         <v-col cols="12" style="margin-top: 72px">
           <div class="d-flex flex-column">
             <div style="font-size: 12px">[Django, Docker]</div>
-            <div class="font-weight-bold" style="font-size: 32px">
+            <div class="font-weight-bold" style="font-size: 36px">
               Gunicorn에 VScode debugger 붙이기
             </div>
             <div style="margin-top: 12px">
@@ -47,7 +47,7 @@
       </v-row>
     </div>
     <div
-      style="margin: 210px 0 0 75px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
+      style="margin: 218px 0 0 73px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
     >
       <v-row style="padding-left: 20px">
         <v-col style="color: #686868">
