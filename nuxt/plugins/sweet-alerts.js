@@ -103,11 +103,11 @@ function info(app, val, func = () => { }) {
     }
 }
 
-function apiResponse(app, response, successFunc = () => { }, errFunc = () => { }) {
+function apiResponse(app, response, successText, successFunc = () => { }, errFunc = () => { }) {
     if (Object.keys(response).includes('error')) {
         error(app, response.error, errFunc)
     } else {
-        success(app, response, successFunc)
+        success(app, successText, successFunc)
     }
 }
 
