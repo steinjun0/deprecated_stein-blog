@@ -203,12 +203,12 @@ export class ViewSetAPI {
     }
   }
 
-  async getAxios(url = this.prefixUrl) {
+  async getAxios(action = '') {
     this.refreshUserData()
     try {
       const res = tokenHeader
-        ? await axios.get(url, tokenHeader)
-        : await axios.get(url, tokenHeader)
+        ? await axios.get(this.prefixUrl + action, tokenHeader)
+        : await axios.get(this.prefixUrl + action, tokenHeader)
       return res.data
     } catch (e) {
       // console.log(e);
@@ -216,17 +216,17 @@ export class ViewSetAPI {
     }
   }
 
-  async getAxiosZip(url = this.prefixUrl) {
+  async getAxiosZip(action = '') {
     this.refreshUserData()
     try {
       const res = user.token
-        ? await axios.get(url, {
+        ? await axios.get(this.prefixUrl + action, {
           headers: {
             Authorization: `Bearer ${user.token}`,
             accept: 'application/x-zip-compressed',
           },
         })
-        : await axios.get(url, {
+        : await axios.get(this.prefixUrl + action, {
           headers: { accept: 'application/x-zip-compressed' },
         })
       return res.data
@@ -236,11 +236,11 @@ export class ViewSetAPI {
     }
   }
 
-  async getAxiosWithParams(param, url = this.prefixUrl) {
+  async getAxiosWithParams(param, action = '') {
     this.refreshUserData()
     try {
       const res = await axios.get(
-        url,
+        this.prefixUrl + '/' + action,
         {
           params: param,
         },
@@ -252,13 +252,13 @@ export class ViewSetAPI {
     }
   }
 
-  async postAxios(data) {
-    const url = this.prefixUrl
+  async postAxios(data, action = '') {
+
     this.refreshUserData()
     try {
       const res = tokenHeader
-        ? await axios.post(url, data, tokenHeader)
-        : await axios.post(url, data)
+        ? await axios.post(this.prefixUrl + action, data, tokenHeader)
+        : await axios.post(this.prefixUrl + action, data)
       return res.data
     } catch (e) {
       // console.log(e);
@@ -266,19 +266,17 @@ export class ViewSetAPI {
     }
   }
 
-  async postAxiosFormData(data) {
-    const url = this.prefixUrl
-
+  async postAxiosFormData(data, action = '') {
     this.refreshUserData()
     try {
       const res = user.token
-        ? await axios.post(url, data, {
+        ? await axios.post(this.prefixUrl + action, data, {
           headers: {
             Authorization: `Bearer ${user.token}`,
             'Content-Type': 'multipart/form-data',
           },
         })
-        : await axios.post(url, data, {
+        : await axios.post(this.prefixUrl + action, data, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
       return res.data
@@ -288,8 +286,8 @@ export class ViewSetAPI {
     }
   }
 
-  async patchAxios(key, data) {
-    const url = this.prefixUrl + `${key}/`
+  async patchAxios(key, data, action = '') {
+    const url = this.prefixUrl + action + `${key}/`
 
     this.refreshUserData()
     try {
@@ -303,8 +301,8 @@ export class ViewSetAPI {
     }
   }
 
-  async patchAxiosFormData(key, data) {
-    const url = this.prefixUrl + `${key}/`
+  async patchAxiosFormData(key, data, action) {
+    const url = this.prefixUrl + action + `${key}/`
 
     this.refreshUserData()
     try {
@@ -325,8 +323,8 @@ export class ViewSetAPI {
     }
   }
 
-  async putAxios(key) {
-    const url = this.prefixUrl + `${key}/`
+  async putAxios(key, action) {
+    const url = this.prefixUrl + action + `${key}/`
 
     this.refreshUserData()
     try {
@@ -340,8 +338,8 @@ export class ViewSetAPI {
     }
   }
 
-  async deleteAxios(key) {
-    const url = this.prefixUrl + `${key}/`
+  async deleteAxios(key, action) {
+    const url = this.prefixUrl + action + `${key}/`
 
     this.refreshUserData()
     try {

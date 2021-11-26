@@ -80,7 +80,7 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      const res = await PostAPI.getAxios()
+      const res = await PostAPI.getAxios('get_main_page_list/')
       console.log(res)
     })
 
