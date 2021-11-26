@@ -57,9 +57,29 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def get_main_page_list(self, request):
         posts = models.Post.objects.all()
-        serializer = serializers.PostSerializer(
-            posts, many=True, context={'request': request})
-        return Response(serializer.data)
+        result = {
+            'programming': [],
+            'camera': [],
+            'music': []
+        }
+        for post in posts:
+            categories = post.categories.values()
+            for category in categories:
+                if category['name'] == 'Programming':
+                    result['programming'].append(
+                        {'title': post.title, 'sub_title': post.sub_title, 'categories': categories})
+                    break
+                elif category['name'] == 'Camera':
+                    result['camera'].append(
+                        {'title': post.title, 'sub_title': post.sub_title, 'categories': categories})
+                    break
+                elif category['name'] == 'Music':
+                    result['music'].append(
+                        {'title': post.title, 'sub_title': post.sub_title, 'categories': categories})
+                    break
+        # serializer = serializers.PostSerializer(
+        #     posts, many=True, context={'request': request})
+        return Response(result)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
