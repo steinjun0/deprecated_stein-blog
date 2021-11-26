@@ -58,7 +58,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_main_page_list(self, request):
         posts = models.Post.objects.all()
         serializer = serializers.PostSerializer(
-            posts, many=True)
+            posts, many=True, context={'request': request})
         return Response(serializer.data)
 
 

@@ -16,16 +16,19 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Category
-        fields = ['id', 'name', 'type', 'parent']
+        # fields = ['id', 'name', 'type', 'parent']
+        fields = '__all__'
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True, many=True)
 
     class Meta:
         model = models.Post
-        fields = ['title', 'sub_title', 'html',
-                  'created_at', 'modified_at', 'category']
+        fields = '__all__'
+        depth = 1
+        # fields = ['title', 'sub_title', 'html',
+        #           'created_at', 'modified_at', 'categories']
 
 
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
