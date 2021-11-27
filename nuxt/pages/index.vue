@@ -48,7 +48,11 @@
       class="d-flex flex-row justify-space-between"
       style="margin-top: 20px"
     >
-      <div class="d-flex justify-center" style="width: 282px">
+      <div
+        class="d-flex justify-center"
+        style="width: 282px; cursor: pointer"
+        @click="router.push('/post/list')"
+      >
         포스트 더보기<v-icon>mdi-chevron-right</v-icon>
       </div>
       <div class="d-flex justify-center" style="width: 282px">
@@ -67,7 +71,8 @@ export default defineComponent({
   components: {
     LeftPostCards,
   },
-  setup() {
+  setup(props, { root }) {
+    const router = root._router
     const circleCanvas = ref({})
     const leftPostCardsBottom = (presentPositionAngle) => {
       let ratio = Number(presentPositionAngle.toFixed(2)) / 1.57
@@ -84,7 +89,7 @@ export default defineComponent({
       console.log(res)
     })
 
-    return { circleCanvas, leftPostCardsBottom }
+    return { circleCanvas, leftPostCardsBottom, router }
   },
 })
 </script>
