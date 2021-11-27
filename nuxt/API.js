@@ -211,7 +211,7 @@ export class ViewSetAPI {
         : await axios.get(this.prefixUrl + action, tokenHeader)
       return res.data
     } catch (e) {
-      // console.log(e);
+      console.log(e);
       return { error: e.response.data.errors || e }
     }
   }

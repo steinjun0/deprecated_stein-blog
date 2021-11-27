@@ -16,8 +16,8 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Category
-        # fields = ['id', 'name', 'type', 'parent']
-        fields = '__all__'
+        fields = ['id', 'name', 'type', 'parent']
+        # fields = '__all__'
 
 
 class PostSerializer(serializers.ModelSerializer):
