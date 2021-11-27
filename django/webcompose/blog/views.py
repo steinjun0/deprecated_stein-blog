@@ -1,3 +1,4 @@
+from django.db.models import fields
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -41,8 +42,14 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostSerializer
 
-    def create(self, request):
+    def list(self, request):
+        queryset = models.Post.objects.all()
+        serializer = serializers.PostSerializer(queryset, many=True, fields=('title', 'sub_title',
+                                                                             'created_at', 'modified_at', 'categories'))
 
+        return Response(serializer.data)
+
+    def create(self, request):
         post = models.Post(title=request.data['title'], sub_title=request.data['sub_title'],
                            html=request.data['html'])
         post.save()
