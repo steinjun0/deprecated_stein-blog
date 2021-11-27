@@ -3,7 +3,7 @@ export default {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   },
   shortenNumber(value) {
-    if(isNaN(value)){
+    if (isNaN(value)) {
       return '-'
     }
     if (value > 1000000000 || value < -1000000000) {
@@ -17,7 +17,7 @@ export default {
     }
   },
   shortenWon(value) {
-    if(isNaN(value)){
+    if (isNaN(value)) {
       return '-'
     }
     if (value > 1000000000000 || value < -1000000000000) {
@@ -37,5 +37,10 @@ export default {
   // 문자열 
   // str.sort(ascending); 과 같은 형식으로 사용
   ascending(a, b) { return (a < b) ? -1 : (a === b) ? 0 : 1 },
-  descending(a, b) { return (b < a) ? -1 : (a === b) ? 0 : 1 }
+  descending(a, b) { return (b < a) ? -1 : (a === b) ? 0 : 1 },
+  shortenTime(time) {
+    return time.slice(0, 10) +
+      ' ' +
+      time.slice(11, 16)
+  }
 }
