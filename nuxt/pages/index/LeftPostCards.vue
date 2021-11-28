@@ -17,14 +17,19 @@
         <span>{{ history.detail }}</span>
       </div>
     </div>
-    <CardPostCard
+    <div
       v-for="(data, index) in props.posts"
       :key="index"
-      :categories="data.categories"
-      :title="data.title"
-      :subtitle="data.sub_title"
-      :style="index === postCardsData.length - 1 ? '' : 'margin-bottom: 56px'"
-    />
+      @click="router.push(`post/${data.id}`)"
+    >
+      <CardPostCard
+        :categories="data.categories"
+        :title="data.title"
+        :subtitle="data.sub_title"
+        :style="index === postCardsData.length - 1 ? '' : 'margin-bottom: 56px'"
+      />
+    </div>
+
     <div class="d-flex flex-column" style="margin-top: 56px">
       <span
         style="font-size: 24px; margin-bottom: 12px"
@@ -61,8 +66,9 @@ export default defineComponent({
       },
     },
   },
-  setup(props) {
+  setup(props, { root }) {
     const postCardsData = ref([])
+    const router = root._router
     // postCardsData = [
     // {
     //   category: '[Django,Docker]',
@@ -118,7 +124,7 @@ export default defineComponent({
       { group: 'DACON', detail: 'Front-End Developer' },
       { group: 'DAPADA', detail: 'Web Developer' },
     ])
-    return { postCardsData, profile, props }
+    return { postCardsData, profile, props, router }
   },
 })
 </script>
