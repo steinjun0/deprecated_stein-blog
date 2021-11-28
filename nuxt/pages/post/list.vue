@@ -1,16 +1,17 @@
 <template>
-  <v-row>
-    <div>
+  <v-row style="position: relative">
+    <!-- <div>
       <div style="position: relative" class="hover-effect">
         <span style="z-index: 100">hihi</span>
         hello
       </div>
-    </div>
+    </div> -->
     <v-col
       v-for="(post, index) in postList"
       :key="index"
-      class="d-flex flex-column"
-      style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)"
+      class="d-flex flex-column hover-effect"
+      style="border-bottom: 1px solid rgba(0, 0, 0, 0.12); cursor: pointer"
+      @click="router.push(`/post/${post.id}`)"
     >
       <div style="font-size: 12px; margin-left: 3px">
         [<span v-for="(category, pIndex) in post.categories" :key="pIndex">
@@ -45,13 +46,14 @@ import Utils from '@/plugins/util'
 const PostAPI = new ViewSetAPI('blog/post')
 
 export default defineComponent({
-  setup() {
+  setup(props, { root }) {
+    const router = root._router
+
     const postList = ref([])
     onMounted(async () => {
       postList.value = await PostAPI.getAxios()
-      console.log(postList.value)
     })
-    return { postList, Utils }
+    return { postList, Utils, router }
   },
 })
 </script>
@@ -69,14 +71,14 @@ export default defineComponent({
 
 .hover-effect::before {
   content: '';
-  display: block;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   inset: 0 0 0 0;
-  background: hsl(200 100% 80%);
+  /* background: rgba(243, 243, 243, 1); */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.24);
   z-index: -1;
   transition: transform 0.3s ease;
 }
