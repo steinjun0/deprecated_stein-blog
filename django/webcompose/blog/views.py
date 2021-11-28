@@ -69,18 +69,25 @@ class PostViewSet(viewsets.ModelViewSet):
             'camera': [],
             'music': []
         }
+        counter = [0, 0, 0]
         for post in posts:
             categories = post.categories.values()
             for category in categories:
-                if category['name'] == 'Programming':
-                    result['programming'].append(
-                        {'title': post.title, 'sub_title': post.sub_title, 'categories': categories})
-                    break
+                if counter[0] <= 2:
+                    counter[0] += 1
+                    if category['name'] == 'Programming':
+                        result['programming'].append(
+                            {'title': post.title, 'sub_title': post.sub_title, 'categories': categories})
+                        break
                 elif category['name'] == 'Camera':
+                    if counter[1] <= 2:
+                        counter[1] += 1
                     result['camera'].append(
                         {'title': post.title, 'sub_title': post.sub_title, 'categories': categories})
                     break
                 elif category['name'] == 'Music':
+                    if counter[2] <= 2:
+                        counter[2] += 1
                     result['music'].append(
                         {'title': post.title, 'sub_title': post.sub_title, 'categories': categories})
                     break
