@@ -44,7 +44,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = models.Post.objects.all()
-        serializer = serializers.PostSerializer(queryset, many=True, fields=('title', 'sub_title',
+        serializer = serializers.PostSerializer(queryset, many=True, fields=('id', 'title', 'sub_title',
                                                                              'created_at', 'modified_at', 'categories'))
 
         return Response(serializer.data)
