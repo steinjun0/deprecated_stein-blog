@@ -30,11 +30,11 @@ import { defineComponent } from '@vue/composition-api'
 export default defineComponent({
   props: {
     categories: {
-      type: String,
+      type: Array,
       required: true,
     },
     title: {
-      type: Array,
+      type: String,
       required: true,
     },
     subtitle: {
