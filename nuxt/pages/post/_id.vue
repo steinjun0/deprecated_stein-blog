@@ -13,17 +13,20 @@
             <div class="font-weight-bold" style="font-size: 36px">
               {{ post.title.replace('\\', ' ') }}
             </div>
-            <div style="margin-top: 12px">
-              {{ post.sub_title }}
-            </div>
-            <div class="d-flex" style="margin-top: 12px; margin-left: auto">
-              <div style="font-size: 12px; color: #686868">
-                mod.
-                {{ Utils.shortenTime(post.modified_at) }}
+            <div class="d-flex" style="margin-top: 12px">
+              <div>
+                {{ post.sub_title }}
               </div>
-              <div style="font-size: 12px; color: #686868; margin-left: 8px">
-                crt.
-                {{ Utils.shortenTime(post.created_at) }}
+              <div class="d-flex" style="margin-left: auto; margin-top: auto">
+                <div
+                  v-if="post.modified_at !== post.created_at"
+                  style="font-size: 12px; color: #686868"
+                >
+                  {{ Utils.shortenTime(post.modified_at) }}
+                </div>
+                <div style="font-size: 12px; color: #686868; margin-left: 8px">
+                  {{ Utils.shortenTime(post.created_at) }}
+                </div>
               </div>
             </div>
           </div>
