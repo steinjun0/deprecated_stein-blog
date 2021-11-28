@@ -11,19 +11,19 @@
     >
       <v-row style="padding-left: 40px">
         <v-col style="color: #686868">
-          <div v-for="(menu, index) in menuList" :key="index">
+          <div v-for="(menu, index) in categories" :key="index">
             <div
               v-if="menu.type === 'main'"
               class="font-weight-medium"
               style="margin-bottom: 8px"
             >
-              {{ menu.text }}
+              {{ menu.name }}
             </div>
             <div
               v-else
               style="font-size: 14px; margin-left: 12px; margin-bottom: 16px"
             >
-              {{ menu.text }}
+              {{ menu.name }}
             </div>
           </div>
         </v-col>
@@ -37,12 +37,14 @@ import { defineComponent, ref, onMounted } from '@vue/composition-api'
 import { ViewSetAPI } from '@/API'
 
 const PostAPI = new ViewSetAPI('blog/post')
+const CategoryAPI = new ViewSetAPI('blog/category')
 
 export default defineComponent({
   setup(props, context) {
     // const currentInstance = getCurrentInstance()
     const id = context.root._route.params.id
     const post = ref({})
+    const categories = ref([])
     // const router = context.root._router
     console.log('id', id)
     // router.push('/')
@@ -72,8 +74,36 @@ export default defineComponent({
       } else {
         post.value = res
       }
+
+      const categoryRes = await CategoryAPI.getAxios()
+      if (categoryRes.error !== undefined) {
+        alert('Network Error')
+      } else {
+        const mainCategories = []
+        const subCategories = []
+        for (let i = 0; i < categoryRes.length; i += 1) {
+          if (categoryRes[i].type === 'main') {
+            mainCategories.push(categoryRes[i])
+          } else {
+            subCategories.push(categoryRes[i])
+          }
+        }
+
+        for (let i = 0; i < mainCategories.length; i += 1) {
+          categories.value.push(mainCategories[i])
+          for (let j = 0; j < subCategories.length; j += 1) {
+            if (subCategories[j].parent === mainCategories[i].name) {
+              categories.value.push(subCategories[j])
+            }
+          }
+        }
+        console.log('mainCategories', mainCategories)
+        console.log('subCategories', subCategories)
+      }
+
+      console.log('categories.value', categories.value)
     })
-    return { post, menuList }
+    return { post, menuList, categories }
   },
 })
 </script>
