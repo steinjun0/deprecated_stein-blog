@@ -11,7 +11,7 @@
               >]
             </div>
             <div class="font-weight-bold" style="font-size: 36px">
-              {{ post.title }}
+              {{ post.title.replace('\\', ' ') }}
             </div>
             <div style="margin-top: 12px">
               {{ post.sub_title }}

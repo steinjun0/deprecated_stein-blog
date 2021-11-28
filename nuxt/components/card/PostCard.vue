@@ -9,7 +9,13 @@
       cursor: pointer;
     "
   >
-    <span style="font-size: 14px">{{ category }}</span>
+    <span style="font-size: 14px; height: 21px"
+      >[
+      <span v-for="(category, index) in categories" :key="index">
+        {{ category }}{{ index + 1 !== categories.length ? ', ' : '' }}
+      </span>
+      ]</span
+    >
     <span
       style="font-size: 24px; margin-bottom: 14px"
       class="font-weight-medium"
@@ -23,7 +29,7 @@
 import { defineComponent } from '@vue/composition-api'
 export default defineComponent({
   props: {
-    category: {
+    categories: {
       type: String,
       required: true,
     },
@@ -37,8 +43,16 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const firstLineTitle = props.title[0]
-    const secondLineTitle = props.title[1]
+    let firstLineTitle
+    let secondLineTitle
+    if (props.title.includes('\\')) {
+      firstLineTitle = props.title.slice(0, props.title.indexOf('\\'))
+      secondLineTitle = props.title.slice(props.title.indexOf('\\') + 1)
+    } else {
+      firstLineTitle = props.title
+      secondLineTitle = ''
+    }
+
     return { firstLineTitle, secondLineTitle }
   },
 })

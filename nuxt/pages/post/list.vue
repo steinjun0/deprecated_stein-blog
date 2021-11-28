@@ -20,7 +20,7 @@
         >]
       </div>
       <div style="font-size: 24px; font-weight: 500">
-        {{ post.title }}
+        {{ post.title.replace('\\', ' ') }}
       </div>
       <div
         class="d-flex justify-content-between align-end"

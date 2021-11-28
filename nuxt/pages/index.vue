@@ -10,6 +10,7 @@
     >
       <div style="overflow-y: hidden">
         <LeftPostCards
+          :posts="posts"
           style="position: relative"
           :style="`bottom: ${
             circleCanvas.presentPositionAngle
@@ -74,6 +75,7 @@ export default defineComponent({
   setup(props, { root }) {
     const router = root._router
     const circleCanvas = ref({})
+    const posts = ref([])
     const leftPostCardsBottom = (presentPositionAngle) => {
       let ratio = Number(presentPositionAngle.toFixed(2)) / 1.57
       if (ratio > 3) {
@@ -86,10 +88,11 @@ export default defineComponent({
 
     onMounted(async () => {
       const res = await PostAPI.getAxios('get_main_page_list/')
+      posts.value = [].concat(res.programming, res.music, res.camera)
       console.log(res)
     })
 
-    return { circleCanvas, leftPostCardsBottom, router }
+    return { circleCanvas, leftPostCardsBottom, router, posts }
   },
 })
 </script>
