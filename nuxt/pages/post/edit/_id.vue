@@ -136,6 +136,7 @@ export default defineComponent({
     watch(toastuiEditor, () => {
       if (toastuiEditor.value !== undefined) {
         toastuiEditor.value.invoke('setHeight', '500px')
+        toastuiEditor.value.invoke('changePreviewStyle', 'tab')
       }
     })
     return {
