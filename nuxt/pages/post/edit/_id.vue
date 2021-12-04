@@ -21,17 +21,22 @@
           item-text="name"
         ></v-select>
         <v-text-field
-          v-model="post.title"
+          v-model="localPost.title"
           placeholder="제목 입력"
         ></v-text-field>
         <v-text-field
-          v-model="post.sub_title"
+          v-model="localPost.sub_title"
           placeholder="부제목 입력"
         ></v-text-field>
       </v-col>
       <v-col cols="12">
         <client-only>
-          <editor ref="toastuiEditor" :initial-value="text" align="left">
+          <editor
+            v-if="text !== ''"
+            ref="toastuiEditor"
+            :initial-value="text"
+            align="left"
+          >
           </editor>
           <viewer v-if="toggle" :initial-value="text"></viewer>
         </client-only>
@@ -58,29 +63,48 @@ const PostAPI = new ViewSetAPI('blog/post')
 const CategoryAPI = new ViewSetAPI('blog/category')
 
 export default defineComponent({
-  setup() {
+  props: {
+    post: {
+      type: Object,
+      default: () => {
+        return {
+          title: '',
+          sub_title: '',
+          html: '',
+          categories: [],
+        }
+      },
+    },
+  },
+  setup(props, { root }) {
+    // const router = root._router
+    const params = root._route.params
+    const text = ref('')
+    if (params.id === 'new') {
+      text.value = '이곳에 글을 써주세요'
+    }
     const currentInstance = getCurrentInstance()
     const categories = ref([])
-    const text = ref('이곳에 글을 써주세요')
     const toggle = ref('false')
     const selectedCategory = ref('')
     const selectedCategories = ref([])
-    const post = reactive({
+    const localPost = reactive({
       title: '',
       sub_title: '',
       html: '',
       categories: [],
     })
+
     const toastuiEditor = ref(null)
     onMounted(async () => {
       categories.value = await CategoryAPI.getAxios()
     })
     const getHTML = () => {
-      post.html = toastuiEditor.value.invoke('getHTML')
+      localPost.html = toastuiEditor.value.invoke('getHTML')
     }
     const savePost = async () => {
       getHTML()
-      const res = await PostAPI.postAxios(post)
+      const res = await PostAPI.postAxios(localPost)
       swal.apiResponse(currentInstance, res, '게시글이 저장되었습니다.')
     }
     watch(selectedCategory, (val) => {
@@ -99,7 +123,15 @@ export default defineComponent({
           selectedCategoriesIds.push(element.id)
         }
       })
-      post.categories = selectedCategoriesIds
+      localPost.categories = selectedCategoriesIds
+    })
+    watch(props, () => {
+      localPost.title = props.post.title
+      localPost.sub_title = props.post.sub_title
+      text.value = props.post.html
+      props.post.categories.forEach((el) => {
+        selectedCategories.value.push(el.name)
+      })
     })
     return {
       categories,
@@ -107,7 +139,7 @@ export default defineComponent({
       toggle,
       selectedCategory,
       selectedCategories,
-      post,
+      localPost,
       savePost,
       getHTML,
       toastuiEditor,

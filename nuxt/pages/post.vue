@@ -2,7 +2,7 @@
   <div class="d-flex flex-row">
     <v-row style="max-width: 946px; margin-top: 36px">
       <v-col>
-        <NuxtChild></NuxtChild>
+        <NuxtChild :post="post"></NuxtChild>
       </v-col>
     </v-row>
 
@@ -66,13 +66,21 @@ export default defineComponent({
       { text: 'Video', type: 'sub' },
     ])
     onMounted(async () => {
-      const res = await PostAPI.getAxios(id)
-      if (res.error !== undefined) {
-        if (res.error.response.data.detail === 'Not found.') {
-          alert('not found')
-        }
+      if (id === 'new') {
+        console.log('new')
+      } else if (id === undefined) {
+        alert('wrong access')
+        context.root._router.push('/')
       } else {
-        post.value = res
+        const res = await PostAPI.getAxios(id)
+        if (res.error !== undefined) {
+          if (res.error.response.data.detail === 'Not found.') {
+            alert('not found')
+            context.root._router.push('/post/edit/new')
+          }
+        } else {
+          post.value = res
+        }
       }
 
       const categoryRes = await CategoryAPI.getAxios()
@@ -97,11 +105,7 @@ export default defineComponent({
             }
           }
         }
-        console.log('mainCategories', mainCategories)
-        console.log('subCategories', subCategories)
       }
-
-      console.log('categories.value', categories.value)
     })
     return { post, menuList, categories }
   },

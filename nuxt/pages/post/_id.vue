@@ -41,30 +41,37 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from '@vue/composition-api'
-import { ViewSetAPI } from '@/API'
+import { defineComponent } from '@vue/composition-api'
+// import { ViewSetAPI } from '@/API'
 import Utils from '@/plugins/util'
-const PostAPI = new ViewSetAPI('blog/post')
+// const PostAPI = new ViewSetAPI('blog/post')
 
 export default defineComponent({
+  props: {
+    post: {
+      type: Object,
+      default: () => {},
+    },
+  },
   setup(props, context) {
     // const currentInstance = getCurrentInstance()
-    const id = context.root._route.params.id
-    const post = ref({})
-    // const router = context.root._router
-    // router.push('/')
-    // console.log('context', context)
-    onMounted(async () => {
-      const res = await PostAPI.getAxios(id)
-      if (res.error !== undefined) {
-        if (res.error.response.data.detail === 'Not found.') {
-          alert('not found')
-        }
-      } else {
-        post.value = res
-      }
-    })
-    return { post, Utils }
+    // const id = context.root._route.params.id
+    // const post = ref({})
+    // // const router = context.root._router
+    // // router.push('/')
+    // // console.log('context', context)
+    // onMounted(async () => {
+    //   console.log('why you are here?')
+    //   const res = await PostAPI.getAxios(id)
+    //   if (res.error !== undefined) {
+    //     if (res.error.response.data.detail === 'Not found.') {
+    //       alert('not found')
+    //     }
+    //   } else {
+    //     post.value = res
+    //   }
+    // })
+    return { Utils }
   },
 })
 </script>
