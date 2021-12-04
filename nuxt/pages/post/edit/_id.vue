@@ -29,7 +29,7 @@
           placeholder="부제목 입력"
         ></v-text-field>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" style="height: 500px">
         <client-only>
           <editor
             v-if="text !== ''"
@@ -132,6 +132,11 @@ export default defineComponent({
       props.post.categories.forEach((el) => {
         selectedCategories.value.push(el.name)
       })
+    })
+    watch(toastuiEditor, () => {
+      if (toastuiEditor.value !== undefined) {
+        toastuiEditor.value.invoke('setHeight', '500px')
+      }
     })
     return {
       categories,
