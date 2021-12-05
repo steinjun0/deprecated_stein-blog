@@ -59,5 +59,5 @@ class PostSerializer(DynamicFieldsModelSerializer):
 class FileSerializer(DynamicFieldsModelSerializer):
     # name, upload, created_at
     class Meta:
-        model = models.Post
+        model = models.File
         fields = '__all__'

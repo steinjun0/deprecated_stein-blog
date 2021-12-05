@@ -1,3 +1,6 @@
+import os
+from django.conf import settings
+
 from django.db.models import fields
 from django.shortcuts import render
 from rest_framework.views import APIView
@@ -134,3 +137,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class FileViewSet(viewsets.ModelViewSet):
     queryset = models.File.objects.all()
     serializer_class = serializers.FileSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        os.remove(settings.MEDIA_ROOT+'/'+str(instance.upload))
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.delete()
