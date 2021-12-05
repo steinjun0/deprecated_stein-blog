@@ -129,3 +129,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 return Response('이미 존재하는 카테고리입니다.', status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             raise ValidationError(detail=f'에러 발생: {e}')
+
+
+class FileViewSet(viewsets.ModelViewSet):
+    queryset = models.File.objects.all()
+    serializer_class = serializers.FileSerializer

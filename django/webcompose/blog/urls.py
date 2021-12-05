@@ -39,6 +39,7 @@ router = routers.DefaultRouter()
 router.register(r'user', views.UserViewSet)
 router.register(r'post', views.PostViewSet)
 router.register(r'category', views.CategoryViewSet)
+router.register(r'file', views.FileViewSet)
 
 # router.register(r'companys', parsed_data_view.CompanyViewSet)
 

@@ -26,3 +26,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class File(models.Model):
+    name = models.CharField(max_length=200)
+    upload = models.FileField(upload_to='uploads/%Y/%m/%d/')
+    created_at = models.DateTimeField(auto_now_add=True)
