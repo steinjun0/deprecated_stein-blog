@@ -44,6 +44,10 @@
       <v-col>
         <v-btn @click="savePost">저장</v-btn>
       </v-col>
+      <v-col>
+        <v-text-field v-model="encodedHTML"> </v-text-field>
+        <v-text-field v-model="decodedHTML"> </v-text-field>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -80,6 +84,18 @@ export default defineComponent({
     // const router = root._router
     const params = root._route.params
     const text = ref('')
+    const encodedHTML = ref('')
+    const decodedHTML = ref('')
+    function parseHtmlEntities(str) {
+      return str.replace(/&#(\d+);/g, function (match, numStr) {
+        console.log('numStr', numStr)
+        const num = parseInt(numStr, 10) // read num as normal number
+        return String.fromCharCode(num)
+      })
+    }
+    watch(encodedHTML, () => {
+      decodedHTML.value = parseHtmlEntities(encodedHTML.value)
+    })
     if (params.id === 'new') {
       text.value = '이곳에 글을 써주세요'
     }
@@ -149,6 +165,8 @@ export default defineComponent({
       savePost,
       getHTML,
       toastuiEditor,
+      encodedHTML,
+      decodedHTML,
     }
   },
 })
