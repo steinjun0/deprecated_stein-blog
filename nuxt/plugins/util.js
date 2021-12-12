@@ -42,5 +42,11 @@ export default {
     return time.slice(0, 10) +
       ' ' +
       time.slice(11, 16)
+  },
+  parseHtmlEntities(str) {
+    return str.replace(/&#(\d+);/g, function (match, numStr) {
+      const num = parseInt(numStr, 10) // read num as normal number
+      return String.fromCharCode(num)
+    })
   }
 }

@@ -30,23 +30,10 @@
         ></v-text-field>
       </v-col>
       <v-col cols="12" style="height: 500px">
-        <client-only>
-          <editor
-            v-if="text !== ''"
-            ref="toastuiEditor"
-            :initial-value="text"
-            align="left"
-          >
-          </editor>
-          <viewer v-if="toggle" :initial-value="text"></viewer>
-        </client-only>
+        <client-only> </client-only>
       </v-col>
       <v-col>
         <v-btn @click="savePost">저장</v-btn>
-      </v-col>
-      <v-col>
-        <v-text-field v-model="encodedHTML"> </v-text-field>
-        <v-text-field v-model="decodedHTML"> </v-text-field>
       </v-col>
     </v-row>
   </div>
@@ -83,20 +70,12 @@ export default defineComponent({
   setup(props, { root }) {
     // const router = root._router
     const params = root._route.params
+    const isNewPost = params.id === 'new'
     const text = ref('')
     const encodedHTML = ref('')
     const decodedHTML = ref('')
-    function parseHtmlEntities(str) {
-      return str.replace(/&#(\d+);/g, function (match, numStr) {
-        console.log('numStr', numStr)
-        const num = parseInt(numStr, 10) // read num as normal number
-        return String.fromCharCode(num)
-      })
-    }
-    watch(encodedHTML, () => {
-      decodedHTML.value = parseHtmlEntities(encodedHTML.value)
-    })
-    if (params.id === 'new') {
+
+    if (isNewPost) {
       text.value = '이곳에 글을 써주세요'
     }
     const currentInstance = getCurrentInstance()
@@ -111,13 +90,10 @@ export default defineComponent({
       categories: [],
     })
 
-    const toastuiEditor = ref(null)
     onMounted(async () => {
       categories.value = await CategoryAPI.getAxios()
     })
-    const getHTML = () => {
-      localPost.html = toastuiEditor.value.invoke('getHTML')
-    }
+    const getHTML = () => {}
     const savePost = async () => {
       getHTML()
       const res = await PostAPI.postAxios(localPost)
@@ -149,12 +125,7 @@ export default defineComponent({
         selectedCategories.value.push(el.name)
       })
     })
-    watch(toastuiEditor, () => {
-      if (toastuiEditor.value !== undefined) {
-        toastuiEditor.value.invoke('setHeight', '500px')
-        toastuiEditor.value.invoke('changePreviewStyle', 'tab')
-      }
-    })
+
     return {
       categories,
       text,
@@ -164,7 +135,6 @@ export default defineComponent({
       localPost,
       savePost,
       getHTML,
-      toastuiEditor,
       encodedHTML,
       decodedHTML,
     }
