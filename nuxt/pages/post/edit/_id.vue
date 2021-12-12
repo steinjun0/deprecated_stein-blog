@@ -84,6 +84,7 @@ export default defineComponent({
       theme: 'snow',
       modules: {
         imageResize: true,
+        imageDrop: true,
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],
           ['blockquote', 'code-block'],
