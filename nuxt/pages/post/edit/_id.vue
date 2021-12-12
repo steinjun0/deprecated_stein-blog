@@ -30,7 +30,13 @@
         ></v-text-field>
       </v-col>
       <v-col cols="12" style="height: 500px">
-        <client-only> </client-only>
+        <client-only>
+          <quill-editor
+            ref="editor"
+            v-model="localPost.html"
+            :options="editorOption"
+          />
+        </client-only>
       </v-col>
       <v-col>
         <v-btn @click="savePost">저장</v-btn>
@@ -50,6 +56,7 @@ import {
 } from '@vue/composition-api'
 import { ViewSetAPI } from '@/API'
 import swal from '@/plugins/sweet-alerts'
+
 const PostAPI = new ViewSetAPI('blog/post')
 const CategoryAPI = new ViewSetAPI('blog/category')
 
@@ -71,13 +78,31 @@ export default defineComponent({
     // const router = root._router
     const params = root._route.params
     const isNewPost = params.id === 'new'
-    const text = ref('')
-    const encodedHTML = ref('')
-    const decodedHTML = ref('')
 
-    if (isNewPost) {
-      text.value = '이곳에 글을 써주세요'
-    }
+    const editorOption = ref({
+      // Some Quill options...
+      theme: 'snow',
+      modules: {
+        imageResize: true,
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ header: 1 }, { header: 2 }],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ script: 'sub' }, { script: 'super' }],
+          [{ indent: '-1' }, { indent: '+1' }],
+          [{ direction: 'rtl' }],
+          [{ size: ['small', false, 'large', 'huge'] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ font: [] }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }],
+          ['clean'],
+          ['link', 'image', 'video'],
+        ],
+      },
+    })
+
     const currentInstance = getCurrentInstance()
     const categories = ref([])
     const toggle = ref('false')
@@ -89,6 +114,9 @@ export default defineComponent({
       html: '',
       categories: [],
     })
+    if (isNewPost) {
+      localPost.html = '<p>이곳에 글을 써주세요</p>'
+    }
 
     onMounted(async () => {
       categories.value = await CategoryAPI.getAxios()
@@ -120,7 +148,7 @@ export default defineComponent({
     watch(props, () => {
       localPost.title = props.post.title
       localPost.sub_title = props.post.sub_title
-      text.value = props.post.html
+      localPost.html = props.post.html
       props.post.categories.forEach((el) => {
         selectedCategories.value.push(el.name)
       })
@@ -128,15 +156,13 @@ export default defineComponent({
 
     return {
       categories,
-      text,
+      editorOption,
       toggle,
       selectedCategory,
       selectedCategories,
       localPost,
       savePost,
       getHTML,
-      encodedHTML,
-      decodedHTML,
     }
   },
 })

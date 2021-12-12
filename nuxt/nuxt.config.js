@@ -1,5 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
-
+import webpack from 'webpack'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -18,11 +18,16 @@ export default {
     host: '0.0.0.0', // default: localhost,
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/global.scss'],
+  css: ['~/assets/global.scss',
+    'quill/dist/quill.core.css',
+    'quill/dist/quill.snow.css',
+    'quill/dist/quill.bubble.css'
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/vue-echarts', ssr: false },
+    { src: '~plugins/nuxt-quill-plugin', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -95,7 +100,13 @@ export default {
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [/echarts/, /zrender/]
+    transpile: [/echarts/, /zrender/],
+    plugins: [
+      new webpack.ProvidePlugin({
+        'window.Quill': 'quill/dist/quill.js',
+        'Quill': 'quill/dist/quill.js'
+      })
+    ]
   },
 
 }
