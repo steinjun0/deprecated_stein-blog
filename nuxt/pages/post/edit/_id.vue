@@ -29,7 +29,7 @@
           placeholder="부제목 입력"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" style="height: 500px">
+      <v-col cols="12" style="min-height: 300px">
         <client-only>
           <quill-editor
             ref="editor"
@@ -75,7 +75,7 @@ export default defineComponent({
     },
   },
   setup(props, { root }) {
-    // const router = root._router
+    const router = root._router
     const params = root._route.params
     const isNewPost = params.id === 'new'
 
@@ -125,8 +125,27 @@ export default defineComponent({
     const getHTML = () => {}
     const savePost = async () => {
       getHTML()
-      const res = await PostAPI.postAxios(localPost)
-      swal.apiResponse(currentInstance, res, '게시글이 저장되었습니다.')
+      if (isNewPost) {
+        const res = await PostAPI.postAxios(localPost)
+        swal.apiResponse(
+          currentInstance,
+          res,
+          '게시글이 저장되었습니다.',
+          () => {
+            router.push(`/`)
+          }
+        )
+      } else {
+        const res = await PostAPI.patchAxios(params.id, localPost)
+        swal.apiResponse(
+          currentInstance,
+          res,
+          '게시글이 수정되었습니다.',
+          () => {
+            router.push(`/post/${res.id}`)
+          }
+        )
+      }
     }
     watch(selectedCategory, (val) => {
       let alreadyExist = false
@@ -168,3 +187,9 @@ export default defineComponent({
   },
 })
 </script>
+<style>
+.ql-container {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+</style>

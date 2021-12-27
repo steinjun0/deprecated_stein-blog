@@ -46,7 +46,6 @@ export default defineComponent({
     const post = ref({})
     const categories = ref([])
     // const router = context.root._router
-    console.log('id', id)
     // router.push('/')
     // console.log('context', context)
     const menuList = ref([

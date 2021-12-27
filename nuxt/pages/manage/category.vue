@@ -77,7 +77,6 @@ export default defineComponent({
       return result
     })
     const createCategory = async () => {
-      console.log('newCategory.value', newCategory)
       await CateogoryAPI.postAxios(newCategory)
       categories.value = await CateogoryAPI.getAxios()
     }
