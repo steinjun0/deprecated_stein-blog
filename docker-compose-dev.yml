@@ -13,10 +13,12 @@ services:
       - HOST=0.0.0.0
     command: bash -c '
       cd /home/web-compose/nuxt
-      && npm i
+      && npm ci
       && npm run dev'
+
   django:
-    image: python:3.8.12-slim-buster
+    # image: python:3.8.12-slim-buster
+    build: ./django
     volumes:
       - ./:/home/web-compose
     ports:
@@ -29,16 +31,13 @@ services:
       - HOST=0.0.0.0
     command:
       bash -c '
-      cd /home/web-compose/django/
-      && apt-get update && apt-get install -y procps
-      && pip install -r requirement.txt
-      && cd webcompose
-      && python manage.py collectstatic --noinput
-      && gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
+      cd /home/web-compose/django/webcompose
+      && poetry run python manage.py collectstatic --noinput
+      && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
       && tail -F /dev/null'
-      # && python manage.py runserver 0.0.0.0:8000
     depends_on:
       - postgres
+
   postgres:
     image: postgres:13.0-alpine
     volumes:
