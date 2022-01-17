@@ -4,37 +4,36 @@ services:
   nuxt:
     image: node:14.17
     volumes:
-      - ./:/home/web-compose
+      - ./nuxt:/container/nuxt
     expose:
       - 3000
-    environment:
-      - HOST=0.0.0.0
     command: bash -c '
-      cd /home/web-compose/nuxt
+      cd /container/nuxt
       && npm run dev
       && tail -F /dev/null'
-      # && npm ci
+      # && npm ci 
+            # insert it to before 'npm run dev' when doesn't have node_modules
+            # also package-lock.json doesn't exist
 
   django:
-    # image: python:3.8.12-slim-buster
     build: ./django
     volumes:
-      - ./:/home/web-compose
+      - ./django:/container/django
     expose:
       - 8000
     env_file:
-      - ./.env.dev
-    environment:
-      - HOST=0.0.0.0
-    tty: true
+      - ./django/.env.dev
     command:
       bash -c '
-      cd /home/web-compose/django/webcompose
+      cd /container/django/webcompose
+      && poetry config virtualenvs.in-project true
+      && poetry install --no-interaction
       && poetry run python manage.py collectstatic --noinput
       && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
       && tail -F /dev/null'
-      # poetry는 node_modules와 같은 폴더를 따로 가지고 있지 않아서 dockerfile로 관리한다.
-      # && poetry install --no-interaction # command로 넣으면 매번 compose-up의 시간이 너무 오래 걸린다.
+      # && poetry update
+            # Use this command if you want to update dependencies latest 
+            # or to fix dependencies version error.
       
     depends_on:
       - postgres
@@ -49,10 +48,10 @@ services:
       - ./.env.postgres
 
   nginx:
-    #image: nginx:latest
     build: ./nginx
     volumes:
-      - ./:/home/web-compose
+      - ./nginx:/container/nginx
+      - ./django/webcompose/static:/container/django/webcompose/static
     ports:
       - 80:80
     depends_on:
