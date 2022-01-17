@@ -25,5 +25,33 @@
         "--workers=3"
       ],
     },
+    {
+      "name": "poetry: gunicorn",
+      "type": "python",
+      "request": "launch",
+      "cwd": "/home/web-compose/django/webcompose",
+      // "module": "poetry",
+      "program": "/home/web-compose/django/.venv/bin/gunicorn",
+      "args": [
+        // "run",
+        // "gunicorn",
+        "webcompose.wsgi:application",
+        "--bind=0.0.0.0:8000",
+        "--timeout=300",
+        "--reload",
+        "--workers=3",
+      ],
+    },
+    {
+      "name": "poetry: Django",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/webcompose/manage.py",
+      "args": [
+        "runserver",
+        "0.0.0.0:8000"
+      ],
+      "django": true
+    },
   ]
 }

@@ -5,36 +5,37 @@ services:
     image: node:14.17
     volumes:
       - ./:/home/web-compose
-    ports:
-    - 8001:3000
     expose:
       - 3000
     environment:
       - HOST=0.0.0.0
     command: bash -c '
       cd /home/web-compose/nuxt
-      && npm ci
-      && npm run dev'
+      && npm run dev
+      && tail -F /dev/null'
+      # && npm ci
 
   django:
     # image: python:3.8.12-slim-buster
     build: ./django
     volumes:
       - ./:/home/web-compose
-    ports:
-      - 8000:8000
     expose:
       - 8000
     env_file:
       - ./.env.dev
     environment:
       - HOST=0.0.0.0
+    tty: true
     command:
       bash -c '
       cd /home/web-compose/django/webcompose
       && poetry run python manage.py collectstatic --noinput
       && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
       && tail -F /dev/null'
+      # poetry는 node_modules와 같은 폴더를 따로 가지고 있지 않아서 dockerfile로 관리한다.
+      # && poetry install --no-interaction # command로 넣으면 매번 compose-up의 시간이 너무 오래 걸린다.
+      
     depends_on:
       - postgres
 
