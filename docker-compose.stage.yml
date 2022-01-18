@@ -43,7 +43,7 @@ services:
   postgres:
     image: postgres:13.0-alpine
     volumes:
-      - ./postgres:/var/lib/postgresql/data/
+      - ./postgres-stage:/var/lib/postgresql/data/
     ports:
       - 5432:5432
     env_file:
