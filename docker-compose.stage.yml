@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  nuxt:
+    image: node:14.17
+    volumes:
+      - ./nuxt:/container/nuxt
+    expose:
+      - 3000
+    environment:
+      - VIRTUAL_HOST=yourdomain.com,www.yourdomain.com
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=yourdomain.com,www.yourdomain.com
+    command: 
+      bash -c '
+      cd /container/nuxt
+      && npm ci
+      && npm start
+      && tail -F /dev/null'
+      
+  django:
+    build: ./django
+    volumes:
+      - ./django:/container/django
+    expose:
+      - 8000
+    env_file:
+      - ./django/.env
+    environment:
+      - VIRTUAL_HOST=api.yourdomain.com
+      - VIRTUAL_PORT=8000
+      - LETSENCRYPT_HOST=api.yourdomain.com
+    command: 
+      bash -c ' 
+      cd /container/django/webcompose
+      && poetry config virtualenvs.in-project true
+      && poetry install --no-interaction
+      && poetry run python manage.py collectstatic --noinput
+      && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
+      && tail -F /dev/null' 
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:13.0-alpine
+    volumes:
+      - ./postgres:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env.postgres
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - ./nginx:/container/nginx
+      - ./django/webcompose/static:/container/django/webcompose/static
+    ports:
+      - 80:80
+    depends_on:
+      - nuxt
+      - django
+
+
+  # nginx-proxy:
+  #   build: ./nginx-proxy
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   volumes:
+  #     - ./:/home/webcompose
+  #     - ./nginx-proxy/certs:/etc/nginx/certs
+  #     - ./nginx-proxy/html:/usr/share/nginx/html
+  #     - ./nginx-proxy/vhost.d:/etc/nginx/vhost.d
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #   depends_on:
+  #     - django
+  #     - nuxt
+
+  # nginx-proxy-letsencrypt:
+  #   image: nginxproxy/acme-companion
+  #   environment:
+  #     - DEFAULT_EMAIL=jun@yourdomain.co.kr
+  #   volumes_from:
+  #     - nginx-proxy
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - ./nginx-proxy/acme:/etc/acme.sh
+  #   depends_on:
+  #     - nginx-proxy
