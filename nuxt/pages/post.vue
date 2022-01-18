@@ -2,7 +2,7 @@
   <div class="d-flex flex-row">
     <v-row style="max-width: 946px; margin-top: 36px">
       <v-col>
-        <NuxtChild :key="$route.fullPath" :post="post"></NuxtChild>
+        <nuxt-child :key="$route.fullPath" :post="post"></nuxt-child>
       </v-col>
     </v-row>
 
@@ -33,7 +33,13 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from '@vue/composition-api'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  computed,
+  watch,
+} from '@vue/composition-api'
 import { ViewSetAPI } from '@/API'
 
 const PostAPI = new ViewSetAPI('blog/post')
@@ -42,9 +48,9 @@ const CategoryAPI = new ViewSetAPI('blog/category')
 export default defineComponent({
   setup(props, context) {
     // const currentInstance = getCurrentInstance()
-    const id = context.root._route.params.id
-    const path = context.root._route.path
-    const isPostList = path === '/post/list'
+    const id = computed(() => context.root._route.params.id)
+    const path = computed(() => context.root._route.path)
+    const isPostList = computed(() => path.value === '/post/list')
     const post = ref({})
     const categories = ref([])
     // const router = context.root._router
@@ -66,27 +72,35 @@ export default defineComponent({
       { text: 'Photo', type: 'sub' },
       { text: 'Video', type: 'sub' },
     ])
-    onMounted(async () => {
-      if (id === 'new') {
+
+    const enterPostProcess = async (idRef, postRef) => {
+      const res = await PostAPI.getAxios(idRef.value)
+      if (res.error !== undefined) {
+        if (res.error.response.data.detail === 'Not found.') {
+          alert('not found')
+          context.root._router.push('/post/edit/new')
+        }
+      } else {
+        postRef.value = res
+      }
+    }
+
+    const refreshData = (idRef, isPostListRef, post) => {
+      console.log('id', idRef, 'isPostList', isPostList)
+      if (id.value === 'new') {
         // empty
-      } else if (isPostList) {
+      } else if (isPostListRef.value) {
+        post.value = {}
         // empty
-      } else if (id === undefined) {
-        alert(path)
+      } else if (id.value === undefined) {
         alert('wrong access')
         context.root._router.push('/')
       } else {
-        const res = await PostAPI.getAxios(id)
-        if (res.error !== undefined) {
-          if (res.error.response.data.detail === 'Not found.') {
-            alert('not found')
-            context.root._router.push('/post/edit/new')
-          }
-        } else {
-          post.value = res
-        }
+        enterPostProcess(id, post)
       }
+    }
 
+    const setCategories = async (categoriesRef) => {
       const categoryRes = await CategoryAPI.getAxios()
       if (categoryRes.error !== undefined) {
         alert('Network Error')
@@ -102,16 +116,29 @@ export default defineComponent({
         }
 
         for (let i = 0; i < mainCategories.length; i += 1) {
-          categories.value.push(mainCategories[i])
+          categoriesRef.value.push(mainCategories[i])
           for (let j = 0; j < subCategories.length; j += 1) {
             if (subCategories[j].parent === mainCategories[i].name) {
-              categories.value.push(subCategories[j])
+              categoriesRef.value.push(subCategories[j])
             }
           }
         }
       }
+    }
+
+    watch(path, () => {
+      refreshData(id, isPostList, post)
     })
-    return { post, menuList, categories }
+
+    onMounted(() => {
+      refreshData(id, isPostList, post)
+      setCategories(categories)
+    })
+
+    // watch(context.root._route.path, (val) => {
+    //   if
+    // })
+    return { post, menuList, categories, path }
   },
 })
 </script>
