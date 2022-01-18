@@ -15,7 +15,7 @@
       "name": "Python: gunicorn",
       "type": "python",
       "request": "launch",
-      "cwd": "/${workspaceFolder}/webcompose",
+      "cwd": "${workspaceFolder}/webcompose",
       "program": "/usr/local/bin/gunicorn",
       "args": [
         "webcompose.wsgi:application",
@@ -29,7 +29,7 @@
       "name": "poetry: gunicorn",
       "type": "python",
       "request": "launch",
-      "cwd": "/${workspaceFolder}/webcompose",
+      "cwd": "${workspaceFolder}/webcompose",
       // "module": "poetry",
       "program": "/${workspaceFolder}/.venv/bin/gunicorn",
       "args": [
