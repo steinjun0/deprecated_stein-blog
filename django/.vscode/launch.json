@@ -15,7 +15,7 @@
       "name": "Python: gunicorn",
       "type": "python",
       "request": "launch",
-      "cwd": "/home/web-compose/django/webcompose",
+      "cwd": "/${workspaceFolder}/webcompose",
       "program": "/usr/local/bin/gunicorn",
       "args": [
         "webcompose.wsgi:application",
@@ -29,9 +29,9 @@
       "name": "poetry: gunicorn",
       "type": "python",
       "request": "launch",
-      "cwd": "/home/web-compose/django/webcompose",
+      "cwd": "/${workspaceFolder}/webcompose",
       // "module": "poetry",
-      "program": "/home/web-compose/django/.venv/bin/gunicorn",
+      "program": "/${workspaceFolder}/.venv/bin/gunicorn",
       "args": [
         // "run",
         // "gunicorn",
@@ -41,6 +41,7 @@
         "--reload",
         "--workers=3",
       ],
+      "envFile": "${workspaceFolder}/.env.dev"
     },
     {
       "name": "poetry: Django",
