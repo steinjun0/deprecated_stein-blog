@@ -2,12 +2,12 @@
   <div class="d-flex flex-row">
     <v-row style="max-width: 946px; margin-top: 36px">
       <v-col>
-        <NuxtChild :post="post"></NuxtChild>
+        <NuxtChild :key="$route.fullPath" :post="post"></NuxtChild>
       </v-col>
     </v-row>
 
     <div
-      style="margin: 194px 0 0 73px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
+      style="margin: 165px 0 0 73px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
     >
       <v-row style="padding-left: 40px">
         <v-col style="color: #686868">
@@ -43,6 +43,8 @@ export default defineComponent({
   setup(props, context) {
     // const currentInstance = getCurrentInstance()
     const id = context.root._route.params.id
+    const path = context.root._route.path
+    const isPostList = path === '/post/list'
     const post = ref({})
     const categories = ref([])
     // const router = context.root._router
@@ -66,8 +68,11 @@ export default defineComponent({
     ])
     onMounted(async () => {
       if (id === 'new') {
-        console.log('new')
+        // empty
+      } else if (isPostList) {
+        // empty
       } else if (id === undefined) {
+        alert(path)
         alert('wrong access')
         context.root._router.push('/')
       } else {

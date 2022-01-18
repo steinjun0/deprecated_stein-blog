@@ -11,6 +11,7 @@
       :key="index"
       class="d-flex flex-column hover-effect"
       style="border-bottom: 1px solid rgba(0, 0, 0, 0.12); cursor: pointer"
+      cols="12"
       @click="router.push(`/post/${post.id}`)"
     >
       <div style="font-size: 12px; margin-left: 3px">
@@ -84,6 +85,6 @@ export default defineComponent({
 }
 .hover-effect {
   z-index: 1;
-  position: absolute;
+  position: relative;
 }
 </style>
