@@ -57,7 +57,32 @@ export default defineComponent({
 
     const postList = ref([])
     onMounted(async () => {
-      postList.value = await PostAPI.getAxios()
+      const convertToList = (elem) => {
+        if (elem === undefined) {
+          return []
+        } else if (typeof elem === 'string') {
+          return [elem]
+        } else {
+          return elem
+        }
+      }
+      const filteringCategories = convertToList(root._route.query.category)
+      const getCategoriesUrlQuery = () => {
+        if (filteringCategories.length === 0) {
+          return ''
+        }
+        let query = '/?'
+        filteringCategories.forEach((category) => {
+          query += `categories=${category}&`
+        })
+        query.slice(0, -1)
+        return query
+      }
+      const filteredCategoriesUrlQuery = getCategoriesUrlQuery()
+
+      postList.value = await PostAPI.getAxios(
+        `get_category_filtered_list${filteredCategoriesUrlQuery}`
+      )
     })
     return { postList, Utils, router }
   },
