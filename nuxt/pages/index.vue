@@ -87,7 +87,7 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      const res = await PostAPI.getAxios('get_main_page_list/')
+      const res = await PostAPI.getAxios(`get_main_page_list`)
       posts.value = [].concat(res.programming, res.music, res.camera)
     })
 
