@@ -104,14 +104,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def get_category_filtered_list(self, request):
+        if 'categories' in dict(request.query_params):
+            category_names = dict(request.query_params)['categories']
+            category_objects = models.Category.objects.filter(
+                name__in=category_names)
+            queryset = models.Post.objects.filter(
+                categories__in=category_objects).distinct('id')
+        else:
+            queryset = models.Post.objects.all()
 
-        category_names = dict(request.query_params)['categories']
-        category_objects = models.Category.objects.filter(
-            name__in=category_names)
-        filtered_posts_queryset = models.Post.objects.filter(
-            categories__in=category_objects).distinct('id')
         serializer = serializers.PostSerializer(
-            filtered_posts_queryset,
+            queryset,
             many=True,
             context={'request': request},
             fields=('id', 'title', 'sub_title',
