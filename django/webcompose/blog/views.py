@@ -109,7 +109,7 @@ class PostViewSet(viewsets.ModelViewSet):
         category_objects = models.Category.objects.filter(
             name__in=category_names)
         filtered_posts_queryset = models.Post.objects.filter(
-            categories__in=category_objects)
+            categories__in=category_objects).distinct('id')
         serializer = serializers.PostSerializer(
             filtered_posts_queryset,
             many=True,
