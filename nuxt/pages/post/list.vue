@@ -10,17 +10,22 @@
       v-for="(post, index) in postList"
       :key="index"
       class="d-flex flex-column hover-effect"
-      style="border-bottom: 1px solid rgba(0, 0, 0, 0.12); cursor: pointer"
+      style="
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        margin-bottom: 12px;
+        padding: 12px 4px;
+      "
       cols="12"
       @click="router.push(`/post/${post.id}`)"
     >
-      <div style="font-size: 12px; margin-left: 3px">
+      <div style="font-size: 12px; margin-left: 3px; margin-bottom: 4px">
         [<span v-for="(category, pIndex) in post.categories" :key="pIndex">
           {{ category.name }}
           {{ pIndex + 1 !== post.categories.length ? ', ' : '' }} </span
         >]
       </div>
-      <div style="font-size: 24px; font-weight: 500">
+      <div style="font-size: 24px; font-weight: 500; margin-bottom: 8px">
         {{ post.title.replace('\\', ' ') }}
       </div>
       <div
