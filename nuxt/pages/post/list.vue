@@ -6,6 +6,53 @@
         hello
       </div>
     </div> -->
+    <template v-if="isLoading">
+      <v-col
+        v-for="(post, index) in Array(4)"
+        :key="`skeleton-${index}`"
+        class="d-flex flex-column hover-effect"
+        style="
+          border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+          cursor: pointer;
+          margin-bottom: 12px;
+          padding: 12px 4px;
+          height: 122px;
+        "
+        cols="12"
+      >
+        <div style="font-size: 12px; margin-left: 3px; margin-bottom: 4px">
+          <v-skeleton-loader
+            type="text"
+            :width="`${100 + Math.random() * 30}px`"
+          ></v-skeleton-loader>
+        </div>
+        <div style="font-size: 24px; font-weight: 500; margin-bottom: 8px">
+          <v-skeleton-loader
+            type="heading"
+            :width="`${500 + Math.random() * 500}px`"
+          ></v-skeleton-loader>
+        </div>
+        <div
+          class="d-flex justify-content-between align-end"
+          style="margin-top: 24px"
+        >
+          <v-skeleton-loader
+            type="text"
+            :width="`${200 + Math.random() * 50}px`"
+          ></v-skeleton-loader>
+          <v-skeleton-loader
+            style="
+              margin-left: auto;
+              color: rgb(104, 104, 104);
+              font-size: 12px;
+            "
+            width="100px"
+            type="text"
+          ></v-skeleton-loader>
+        </div>
+      </v-col>
+    </template>
+
     <v-col
       v-for="(post, index) in postList"
       :key="index"
@@ -54,7 +101,7 @@ const PostAPI = new ViewSetAPI('blog/post')
 export default defineComponent({
   setup(props, { root }) {
     const router = root._router
-
+    const isLoading = ref(true)
     const postList = ref([])
     onMounted(async () => {
       const convertToList = (elem) => {
@@ -83,8 +130,9 @@ export default defineComponent({
       postList.value = await PostAPI.getAxios(
         `get_category_filtered_list${filteredCategoriesUrlQuery}`
       )
+      isLoading.value = false
     })
-    return { postList, Utils, router }
+    return { postList, Utils, router, isLoading }
   },
 })
 </script>
