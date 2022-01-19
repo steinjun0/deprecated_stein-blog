@@ -111,7 +111,7 @@ class PostViewSet(viewsets.ModelViewSet):
             queryset = models.Post.objects.filter(
                 categories__in=category_objects).annotate(num_categories=Count('categories')).filter(num_categories=len(category_names))
             # categories__in: get every posts matched any of category in category_objects
-            # annoate: make a num_categories field with Count of categories
+            # annoate: make a num_categories annotation(as a field) with Count of categories
             # filter(again): filter posts have exact number of category_names
         else:
             queryset = models.Post.objects.all()
