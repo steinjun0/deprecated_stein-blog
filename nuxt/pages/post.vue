@@ -9,45 +9,50 @@
     <div
       style="margin: 165px 0 0 73px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
     >
-      <v-row style="padding-left: 40px">
-        <v-col style="color: #686868">
-          <div v-for="(menu, index) in categories" :key="index">
-            <div
-              v-if="menu.type === 'main'"
-              class="font-weight-medium"
-              style="margin-bottom: 8px"
-            >
-              <nuxt-link
-                :to="`/post/list?category=${menu.name}`"
-                style="color: rgba(0, 0, 0, 0.87)"
-                :style="
-                  $route.fullPath.includes(menu.name)
-                    ? ''
-                    : 'text-decoration: none'
-                "
+      <div
+        :style="`margin-top: ${presentSideNavigationPosition}px`"
+        style="transition-duration: 0.4s; transition-timing-function: ease-out"
+      >
+        <v-row style="padding-left: 40px">
+          <v-col style="color: #686868">
+            <div v-for="(menu, index) in categories" :key="index">
+              <div
+                v-if="menu.type === 'main'"
+                class="font-weight-medium"
+                style="margin-bottom: 8px"
               >
-                {{ menu.name }}
-              </nuxt-link>
-            </div>
-            <div
-              v-else
-              style="font-size: 14px; margin-left: 12px; margin-bottom: 16px"
-            >
-              <nuxt-link
-                :to="`/post/list?category=${menu.name}`"
-                style="color: rgba(0, 0, 0, 0.87)"
-                :style="
-                  $route.fullPath.includes(menu.name)
-                    ? ''
-                    : 'text-decoration: none'
-                "
+                <nuxt-link
+                  :to="`/post/list?category=${menu.name}`"
+                  style="color: rgba(0, 0, 0, 0.87)"
+                  :style="
+                    $route.fullPath.includes(menu.name)
+                      ? ''
+                      : 'text-decoration: none'
+                  "
+                >
+                  {{ menu.name }}
+                </nuxt-link>
+              </div>
+              <div
+                v-else
+                style="font-size: 14px; margin-left: 12px; margin-bottom: 16px"
               >
-                {{ menu.name }}
-              </nuxt-link>
+                <nuxt-link
+                  :to="`/post/list?category=${menu.name}`"
+                  style="color: rgba(0, 0, 0, 0.87)"
+                  :style="
+                    $route.fullPath.includes(menu.name)
+                      ? ''
+                      : 'text-decoration: none'
+                  "
+                >
+                  {{ menu.name }}
+                </nuxt-link>
+              </div>
             </div>
-          </div>
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+      </div>
     </div>
   </div>
 </template>
@@ -59,8 +64,10 @@ import {
   onMounted,
   computed,
   watch,
+  onBeforeUnmount,
 } from '@vue/composition-api'
 import { ViewSetAPI } from '@/API'
+// import util from '~/plugins/util'
 
 const PostAPI = new ViewSetAPI('blog/post')
 const CategoryAPI = new ViewSetAPI('blog/category')
@@ -72,10 +79,10 @@ export default defineComponent({
     const path = computed(() => context.root._route.path)
     const isPostList = computed(() => path.value === '/post/list')
     const post = ref({})
+
+    const presentSideNavigationPosition = ref(0)
+
     const categories = ref([])
-    // const router = context.root._router
-    // router.push('/')
-    // console.log('context', context)
     const menuList = ref([
       { text: 'Total', type: 'main' },
       { text: 'Programming', type: 'main' },
@@ -145,11 +152,21 @@ export default defineComponent({
       }
     }
 
+    const handleScroll = () => {
+      // Your scroll handling here
+      presentSideNavigationPosition.value = window.scrollY
+    }
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
     watch(path, () => {
       refreshData(id, isPostList, post)
     })
 
     onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
       refreshData(id, isPostList, post)
       setCategories(categories)
     })
@@ -157,7 +174,7 @@ export default defineComponent({
     // watch(context.root._route.path, (val) => {
     //   if
     // })
-    return { post, menuList, categories, path }
+    return { post, menuList, categories, path, presentSideNavigationPosition }
   },
 })
 </script>
