@@ -17,13 +17,33 @@
               class="font-weight-medium"
               style="margin-bottom: 8px"
             >
-              {{ menu.name }}
+              <nuxt-link
+                :to="`/post/list?category=${menu.name}`"
+                style="color: rgba(0, 0, 0, 0.87)"
+                :style="
+                  $route.fullPath.includes(menu.name)
+                    ? ''
+                    : 'text-decoration: none'
+                "
+              >
+                {{ menu.name }}
+              </nuxt-link>
             </div>
             <div
               v-else
               style="font-size: 14px; margin-left: 12px; margin-bottom: 16px"
             >
-              {{ menu.name }}
+              <nuxt-link
+                :to="`/post/list?category=${menu.name}`"
+                style="color: rgba(0, 0, 0, 0.87)"
+                :style="
+                  $route.fullPath.includes(menu.name)
+                    ? ''
+                    : 'text-decoration: none'
+                "
+              >
+                {{ menu.name }}
+              </nuxt-link>
             </div>
           </div>
         </v-col>
@@ -86,7 +106,6 @@ export default defineComponent({
     }
 
     const refreshData = (idRef, isPostListRef, post) => {
-      console.log('id', idRef, 'isPostList', isPostList)
       if (id.value === 'new') {
         // empty
       } else if (isPostListRef.value) {

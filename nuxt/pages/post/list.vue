@@ -73,7 +73,7 @@ export default defineComponent({
         }
         let query = '/?'
         filteringCategories.forEach((category) => {
-          query += `categories=${category}&`
+          query += `category=${category}&`
         })
         query.slice(0, -1)
         return query

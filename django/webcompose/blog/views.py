@@ -1,7 +1,7 @@
 import os
 from django.conf import settings
 
-from django.db.models import fields
+from django.db.models import fields, Count
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -104,12 +104,15 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def get_category_filtered_list(self, request):
-        if 'categories' in dict(request.query_params):
-            category_names = dict(request.query_params)['categories']
+        if 'category' in dict(request.query_params):
+            category_names = dict(request.query_params)['category']
             category_objects = models.Category.objects.filter(
                 name__in=category_names)
             queryset = models.Post.objects.filter(
-                categories__in=category_objects).distinct('id')
+                categories__in=category_objects).annotate(num_categories=Count('categories')).filter(num_categories=len(category_names))
+            # categories__in: get every posts matched any of category in category_objects
+            # annoate: make a num_categories field with Count of categories
+            # filter(again): filter posts have exact number of category_names
         else:
             queryset = models.Post.objects.all()
 
