@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, watch } from '@vue/composition-api'
 // import { ViewSetAPI } from '@/API'
 import Utils from '@/plugins/util'
 // const PostAPI = new ViewSetAPI('blog/post')
@@ -53,7 +53,22 @@ export default defineComponent({
       default: () => {},
     },
   },
+
   setup(props, context) {
+    const addCategoryQuery = () => {
+      if (
+        props.post.categories !== undefined &&
+        props.post.categories.length !== 0
+      ) {
+        let categoryQuery = '?'
+        props.post.categories.forEach((category) => {
+          categoryQuery += `category=${category.name}&`
+        })
+        context.root._router.replace(`${categoryQuery.slice(0, -1)}`)
+      }
+    }
+    watch(props, addCategoryQuery)
+
     // const currentInstance = getCurrentInstance()
     // const id = context.root._route.params.id
     // const post = ref({})
