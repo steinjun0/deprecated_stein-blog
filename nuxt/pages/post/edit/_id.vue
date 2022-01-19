@@ -54,6 +54,7 @@ import {
   reactive,
   getCurrentInstance,
 } from '@vue/composition-api'
+
 import { ViewSetAPI } from '@/API'
 import swal from '@/plugins/sweet-alerts'
 
@@ -81,7 +82,7 @@ export default defineComponent({
 
     const editorOption = ref({
       // Some Quill options...
-      theme: 'snow',
+      // theme: 'snow',
       modules: {
         imageResize: true,
         imageDrop: true,
@@ -187,6 +188,7 @@ export default defineComponent({
   },
 })
 </script>
+
 <style>
 .ql-container {
   max-height: 500px;

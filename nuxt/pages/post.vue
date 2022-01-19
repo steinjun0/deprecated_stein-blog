@@ -164,4 +164,6 @@ export default defineComponent({
 
 
 <style>
+@import '@/assets/quill/highlight.js/monokai-sublime.css';
+@import '@/assets/quill/snow.css';
 </style>

@@ -1,42 +1,44 @@
 <template>
   <div class="d-flex flex-row">
-    <div>
-      <v-row v-if="post.title" style="max-width: 946px">
-        <v-col cols="12">
-          <div class="d-flex flex-column">
-            <div style="font-size: 12px; margin-left: 3px">
-              [<span v-for="(category, index) in post.categories" :key="index">
-                {{ category.name }}
-                {{ index + 1 !== post.categories.length ? ', ' : '' }} </span
-              >]
+    <v-row v-if="post.title" style="max-width: 946px">
+      <v-col cols="12">
+        <div class="d-flex flex-column">
+          <div style="font-size: 12px; margin-left: 3px">
+            [<span v-for="(category, index) in post.categories" :key="index">
+              {{ category.name }}
+              {{ index + 1 !== post.categories.length ? ', ' : '' }} </span
+            >]
+          </div>
+          <div class="font-weight-bold" style="font-size: 36px">
+            {{ post.title.replace('\\', ' ') }}
+          </div>
+          <div class="d-flex" style="margin-top: 12px">
+            <div>
+              {{ post.sub_title }}
             </div>
-            <div class="font-weight-bold" style="font-size: 36px">
-              {{ post.title.replace('\\', ' ') }}
-            </div>
-            <div class="d-flex" style="margin-top: 12px">
-              <div>
-                {{ post.sub_title }}
+            <div class="d-flex" style="margin-left: auto; margin-top: auto">
+              <div
+                v-if="post.modified_at !== post.created_at"
+                style="font-size: 12px; color: #686868"
+              >
+                {{ Utils.shortenTime(post.modified_at) }}
               </div>
-              <div class="d-flex" style="margin-left: auto; margin-top: auto">
-                <div
-                  v-if="post.modified_at !== post.created_at"
-                  style="font-size: 12px; color: #686868"
-                >
-                  {{ Utils.shortenTime(post.modified_at) }}
-                </div>
-                <div style="font-size: 12px; color: #686868; margin-left: 8px">
-                  {{ Utils.shortenTime(post.created_at) }}
-                </div>
+              <div style="font-size: 12px; color: #686868; margin-left: 8px">
+                {{ Utils.shortenTime(post.created_at) }}
               </div>
             </div>
           </div>
-          <v-divider style="margin-top: 8px"></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <div v-html="post.html"></div>
-        </v-col>
-      </v-row>
-    </div>
+        </div>
+        <v-divider style="margin-top: 8px"></v-divider>
+      </v-col>
+      <v-col
+        cols="12"
+        class="ql-container ql-snow"
+        style="border: none; padding: 0; overflow-y: none"
+      >
+        <div class="ql-editor" v-html="post.html"></div>
+      </v-col>
+    </v-row>
   </div>
 </template>
 

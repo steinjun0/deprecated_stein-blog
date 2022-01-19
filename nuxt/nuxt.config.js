@@ -19,9 +19,9 @@ export default {
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['~/assets/global.scss',
-    'quill/dist/quill.core.css',
-    'quill/dist/quill.snow.css',
-    'quill/dist/quill.bubble.css'
+    //   'quill/dist/quill.core.css',
+    //   'quill/dist/quill.snow.css',
+    //   'quill/dist/quill.bubble.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -39,7 +39,8 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    "@nuxtjs/composition-api/module"
+    "@nuxtjs/composition-api/module",
+
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -50,7 +51,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/dotenv',
     '@nuxtjs/google-fonts',
-    'vue-sweetalert2/nuxt'
+    'vue-sweetalert2/nuxt',
   ],
 
   googleFonts: {
