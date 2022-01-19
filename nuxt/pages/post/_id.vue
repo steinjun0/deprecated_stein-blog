@@ -64,7 +64,9 @@ export default defineComponent({
         props.post.categories.forEach((category) => {
           categoryQuery += `category=${category.name}&`
         })
-        context.root._router.replace(`${categoryQuery.slice(0, -1)}`)
+        context.root._router
+          .replace(`${categoryQuery.slice(0, -1)}`)
+          .catch(() => {})
       }
     }
     watch(props, addCategoryQuery)
