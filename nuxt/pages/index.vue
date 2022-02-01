@@ -8,18 +8,33 @@
       class="d-flex flex-row justify-space-between"
       style="height: 601px"
     >
-      <div style="overflow-y: hidden">
-        <LeftPostCards
-          :posts="posts"
-          style="position: relative"
-          :style="`bottom: ${
-            circleCanvas.presentPositionAngle
-              ? leftPostCardsBottom(circleCanvas.presentPositionAngle)
-              : 635
-          }px`"
-        />
+      <div>
+        <div
+          ref="leftPostCardsWrapper"
+          style="overflow-y: hidden; height: 601px"
+        >
+          <LeftPostCards
+            id="LeftPostCards"
+            :posts="posts"
+            style="position: relative"
+            :style="`bottom: ${
+              circleCanvas.presentPositionAngle
+                ? leftPostCardsBottom(circleCanvas.presentPositionAngle)
+                : 635
+            }px`"
+          />
+        </div>
+        <div
+          class="d-flex justify-center"
+          style="cursor: pointer"
+          @click="router.push('/post/list')"
+        >
+          포스트 더보기<v-icon>mdi-chevron-right</v-icon>
+        </div>
       </div>
+
       <div
+        class="d-none d-md-flex"
         style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
       ></div>
       <div
@@ -35,50 +50,40 @@
         class="d-none d-lg-flex"
         style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
       ></div>
-      <div class="d d-lg-none" style="margin: 0 60px"></div>
-
-      <div class="d-none d-lg-flex flex-column" style="width: 282px">
+      <div class="d-none d-lg-flex flex-column" style="width: 500px">
         <!-- <v-img
           :lazy-src="require('@/assets/img/DapadaSample.png')"
           :src="require('@/assets/img/DapadaSample-min.gif')"
           style="border: 1px solid rgba(0, 0, 0, 0.12)"
         ></v-img> -->
-        <video
-          autoplay
-          loop
-          muted
-          playsinline
-          src="@/assets/img/ezgif-3-4ca33b8f62.mp4"
-        ></video>
-        <!-- <img
-          :src="require('@/assets/img/DapadaSample.gif')"
-          style="border: 1px solid rgba(0, 0, 0, 0.12)"
-        /> -->
-        <div class="d-flex flex-column" style="margin-top: 28px">
-          <span class="font-weight-medium" style="font-size: 24px"
-            >DAPADA Stock</span
-          >
-          <span style="font-size: 16px">From Data to Front End</span>
-          <span style="font-size: 12px">2021.08 ~ 2021.10</span>
-        </div>
-        <div
+        <div style="min-height: 601px">
+          <video
+            autoplay
+            loop
+            muted
+            playsinline
+            src="@/assets/img/ezgif-3-4ca33b8f62.mp4"
+            style="height: 442px"
+          ></video>
+          <!-- <img
+            :src="require('@/assets/img/DapadaSample.gif')"
+            style="border: 1px solid rgba(0, 0, 0, 0.12)"
+          /> -->
+          <div class="d-flex flex-column" style="margin-top: 28px">
+            <span class="font-weight-medium" style="font-size: 24px"
+              >DAPADA Stock</span
+            >
+            <span style="font-size: 16px">From Data to Front End</span>
+            <span style="font-size: 12px">2021.08 ~ 2021.10</span>
+          </div>
+          <!-- <div
           style="border-bottom: 1px solid rgba(0, 0, 0, 0.12); margin-top: 28px"
-        ></div>
-      </div>
-    </v-col>
-    <v-col
-      class="d-flex flex-row justify-space-between"
-      style="margin-top: 20px"
-    >
-      <div
-        class="d-flex justify-center"
-        style="width: 282px; cursor: pointer"
-        @click="router.push('/post/list')"
-      >
-        포스트 더보기<v-icon>mdi-chevron-right</v-icon>
-      </div>
-      <div class="d-none d-lg-flex justify-center" style="width: 282px">
-        작업물 더보기<v-icon>mdi-chevron-right</v-icon>
+        ></div> -->
+        </div>
+
+        <div class="d-none d-lg-flex justify-center" style="width: 282px">
+          작업물 더보기<v-icon>mdi-chevron-right</v-icon>
+        </div>
       </div>
     </v-col>
   </v-row>
@@ -97,6 +102,8 @@ export default defineComponent({
     const router = root._router
     const circleCanvas = ref({})
     const posts = ref([])
+    const leftPostCards = ref()
+
     const leftPostCardsBottom = (presentPositionAngle) => {
       let ratio = Number(presentPositionAngle.toFixed(2)) / 1.57
       if (ratio > 3) {
@@ -112,7 +119,13 @@ export default defineComponent({
       posts.value = [].concat(res.programming, res.music, res.camera)
     })
 
-    return { circleCanvas, leftPostCardsBottom, router, posts }
+    return {
+      circleCanvas,
+      leftPostCardsBottom,
+      router,
+      posts,
+      leftPostCards,
+    }
   },
 })
 </script>

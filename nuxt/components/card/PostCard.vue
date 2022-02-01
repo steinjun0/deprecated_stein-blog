@@ -3,7 +3,6 @@
     class="d-flex flex-column"
     style="
       border-bottom: solid #c4c4c4 1px;
-      width: 282px;
       height: 155px;
       color: #373737;
       cursor: pointer;
