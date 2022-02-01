@@ -28,11 +28,23 @@
       <div
         style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
       ></div>
-      <div class="d-flex flex-column">
-        <v-img
+      <div v-if="$vuetify.breakpoint.lg" class="d-flex flex-column">
+        <!-- <v-img
+          :lazy-src="require('@/assets/img/DapadaSample.png')"
+          :src="require('@/assets/img/DapadaSample-min.gif')"
+          style="border: 1px solid rgba(0, 0, 0, 0.12)"
+        ></v-img> -->
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          src="@/assets/img/ezgif-3-4ca33b8f62.mp4"
+        ></video>
+        <!-- <img
           :src="require('@/assets/img/DapadaSample.gif')"
           style="border: 1px solid rgba(0, 0, 0, 0.12)"
-        ></v-img>
+        /> -->
         <div class="d-flex flex-column" style="margin-top: 28px">
           <span class="font-weight-medium" style="font-size: 24px"
             >DAPADA Stock</span
