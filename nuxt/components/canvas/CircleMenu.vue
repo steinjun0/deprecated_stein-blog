@@ -28,6 +28,21 @@ export default defineComponent({
         'click',
         circleMenuCanvas.getClickedSectorIndex.bind(circleMenuCanvas)
       )
+
+      canvas.addEventListener(
+        'mouseover',
+        circleMenuCanvas.changeCurosr.bind(circleMenuCanvas)
+      )
+
+      canvas.addEventListener(
+        'mouseout',
+        circleMenuCanvas.changeCurosr.bind(circleMenuCanvas)
+      )
+
+      canvas.addEventListener(
+        'mousemove',
+        circleMenuCanvas.changeCurosr.bind(circleMenuCanvas)
+      )
     }
     onMounted(mounted)
 

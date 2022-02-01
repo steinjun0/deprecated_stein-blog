@@ -154,42 +154,55 @@ export default class CircleMenuCanvas extends VueCanvas {
     getClickedSectorIndex(event) {
         const x = event.offsetX;
         const y = event.offsetY;
+        function follow(object, index) {
+            // index가 0이고, 현재각은 0이 아닐떄 -> 0도(2*PI가 안되도록)
+            const objectiveAngle = (index === 0 && object.presentPositionAngle !== 0) ? angleConst[0] : angleConst[index]
+
+            if (object.presentPositionAngle.toFixed(3) >= angleConst[4] || object.presentPositionAngle.toFixed(3) < angleConst[0]) {
+                object.presentPositionAngle = 0
+            }
+
+            if (object.presentPositionAngle.toFixed(3) !== objectiveAngle.toFixed(3)) {
+                if (Number(object.presentPositionAngle.toFixed(3)) === 0 && objectiveAngle > angleConst[2]) {
+                    object.presentPositionAngle = angleConst[4]
+                }
+                if (object.abs(objectiveAngle - object.presentPositionAngle) < 0.01) {
+                    object.presentPositionAngle = objectiveAngle
+                } else {
+                    let diff = object.sin(Number(objectiveAngle - object.presentPositionAngle)) * 0.1
+                    if (diff < 0.01 && diff > 0) {
+                        diff = 0.01
+                    } else if (diff > -0.01 && diff < 0) {
+                        diff = -0.01
+                    }
+                    object.presentPositionAngle += diff
+                    if (object.presentPositionAngle < angleConst[0] || object.presentPositionAngle > angleConst[4]) {
+                        object.presentPositionAngle = 0
+                    }
+                }
+                // object.presentPositionAngle = Number((object.presentPositionAngle + 0.01).toFixed(2))
+                setTimeout(() => { follow(object, index) }, 1)
+            }
+        }
         this.sectorPart.forEach((path, index) => {
             const isStop = angleConst.includes(this.presentPositionAngle)
             if (!isStop) return
             if (this.ctx.isPointInPath(path, x, y)) {
-                function follow(object, index) {
-                    // index가 0이고, 현재각은 0이 아닐떄 -> 0도(2*PI가 안되도록)
-                    const objectiveAngle = (index === 0 && object.presentPositionAngle !== 0) ? angleConst[0] : angleConst[index]
-
-                    if (object.presentPositionAngle.toFixed(3) >= angleConst[4] || object.presentPositionAngle.toFixed(3) < angleConst[0]) {
-                        object.presentPositionAngle = 0
-                    }
-
-                    if (object.presentPositionAngle.toFixed(3) !== objectiveAngle.toFixed(3)) {
-                        if (Number(object.presentPositionAngle.toFixed(3)) === 0 && objectiveAngle > angleConst[2]) {
-                            object.presentPositionAngle = angleConst[4]
-                        }
-                        if (object.abs(objectiveAngle - object.presentPositionAngle) < 0.01) {
-                            object.presentPositionAngle = objectiveAngle
-                        } else {
-                            let diff = object.sin(Number(objectiveAngle - object.presentPositionAngle)) * 0.1
-                            if (diff < 0.01 && diff > 0) {
-                                diff = 0.01
-                            } else if (diff > -0.01 && diff < 0) {
-                                diff = -0.01
-                            }
-                            object.presentPositionAngle += diff
-                            if (object.presentPositionAngle < angleConst[0] || object.presentPositionAngle > angleConst[4]) {
-                                object.presentPositionAngle = 0
-                            }
-                        }
-                        // object.presentPositionAngle = Number((object.presentPositionAngle + 0.01).toFixed(2))
-                        setTimeout(() => { follow(object, index) }, 1)
-                    }
-                }
                 follow(this, index)
+            }
+        })
+    }
 
+    changeCurosr(event) {
+        const x = event.offsetX;
+        const y = event.offsetY;
+        this.sectorPart.forEach((path, index) => {
+            if (this.ctx.isPointInPath(this.presentSectorPath, x, y)) {
+                this.canvas.style.cursor = 'default'
+                return
+            }
+            if (this.ctx.isPointInPath(path, x, y)) {
+                this.canvas.style.cursor = 'pointer'
             }
         })
     }

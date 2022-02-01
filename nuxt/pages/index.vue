@@ -22,13 +22,22 @@
       <div
         style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
       ></div>
-      <div>
+      <div
+        v-if="
+          $vuetify.breakpoint.md ||
+          $vuetify.breakpoint.lg ||
+          $vuetify.breakpoint.xl
+        "
+      >
         <CanvasCircleMenu @canvas="(value) => (circleCanvas = value)" />
       </div>
       <div
+        class="d-none d-lg-flex"
         style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
       ></div>
-      <div v-if="$vuetify.breakpoint.lg" class="d-flex flex-column">
+      <div class="d d-lg-none" style="margin: 0 60px"></div>
+
+      <div class="d-none d-lg-flex flex-column" style="width: 282px">
         <!-- <v-img
           :lazy-src="require('@/assets/img/DapadaSample.png')"
           :src="require('@/assets/img/DapadaSample-min.gif')"
@@ -68,7 +77,7 @@
       >
         포스트 더보기<v-icon>mdi-chevron-right</v-icon>
       </div>
-      <div class="d-flex justify-center" style="width: 282px">
+      <div class="d-none d-lg-flex justify-center" style="width: 282px">
         작업물 더보기<v-icon>mdi-chevron-right</v-icon>
       </div>
     </v-col>
