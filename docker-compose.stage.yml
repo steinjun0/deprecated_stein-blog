@@ -1,4 +1,4 @@
-version: '3.8'
+version: '2.4'
 
 services:
   nuxt:
@@ -8,13 +8,14 @@ services:
     expose:
       - 3000
     environment:
-      - VIRTUAL_HOST=yourdomain.com,www.yourdomain.com
+      - VIRTUAL_HOST=blog.steinjun.net,www.blog.steinjun.net
       - VIRTUAL_PORT=3000
-      - LETSENCRYPT_HOST=yourdomain.com,www.yourdomain.com
+      - LETSENCRYPT_HOST=blog.steinjun.net,www.blog.steinjun.net
     command: 
       bash -c '
       cd /container/nuxt
       && npm ci
+      && npm run build
       && npm start
       && tail -F /dev/null'
       
@@ -27,9 +28,9 @@ services:
     env_file:
       - ./django/.env
     environment:
-      - VIRTUAL_HOST=api.yourdomain.com
+      - VIRTUAL_HOST=api.blog.steinjun.net
       - VIRTUAL_PORT=8000
-      - LETSENCRYPT_HOST=api.yourdomain.com
+      - LETSENCRYPT_HOST=api.blog.steinjun.net
     command: 
       bash -c ' 
       cd /container/django/webcompose
@@ -49,42 +50,42 @@ services:
     env_file:
       - ./.env.postgres
 
-  nginx:
-    build: ./nginx
-    volumes:
-      - ./nginx:/container/nginx
-      - ./django/webcompose/static:/container/django/webcompose/static
-    ports:
-      - 80:80
-    depends_on:
-      - nuxt
-      - django
-
-
-  # nginx-proxy:
-  #   build: ./nginx-proxy
-  #   restart: always
+  # nginx:
+  #   build: ./nginx
+  #   volumes:
+  #     - ./nginx:/container/nginx
+  #     - ./django/webcompose/static:/container/django/webcompose/static
   #   ports:
   #     - 80:80
-  #     - 443:443
-  #   volumes:
-  #     - ./:/home/webcompose
-  #     - ./nginx-proxy/certs:/etc/nginx/certs
-  #     - ./nginx-proxy/html:/usr/share/nginx/html
-  #     - ./nginx-proxy/vhost.d:/etc/nginx/vhost.d
-  #     - /var/run/docker.sock:/tmp/docker.sock:ro
   #   depends_on:
-  #     - django
   #     - nuxt
+  #     - django
 
-  # nginx-proxy-letsencrypt:
-  #   image: nginxproxy/acme-companion
-  #   environment:
-  #     - DEFAULT_EMAIL=jun@yourdomain.co.kr
-  #   volumes_from:
-  #     - nginx-proxy
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #     - ./nginx-proxy/acme:/etc/acme.sh
-  #   depends_on:
-  #     - nginx-proxy
+
+  nginx-proxy:
+    build: ./nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./django:/container/django
+      - ./nginx-proxy/certs:/etc/nginx/certs
+      - ./nginx-proxy/html:/usr/share/nginx/html
+      - ./nginx-proxy/vhost.d:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - django
+      - nuxt
+
+  nginx-proxy-letsencrypt:
+    image: nginxproxy/acme-companion
+    environment:
+      - DEFAULT_EMAIL=junyoung4737@gamil.com
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx-proxy/acme:/etc/acme.sh
+    depends_on:
+      - nginx-proxy
