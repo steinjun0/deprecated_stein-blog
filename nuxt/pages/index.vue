@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" style="margin-bottom: 50px">
-      <span style="font-size: 80px; font-weight: 500">stein.log</span>
+      <span id="blog-title" style="font-weight: 500">stein.log</span>
     </v-col>
     <v-col
       cols="12"
@@ -34,14 +34,18 @@
       </div>
 
       <div
-        class="d-sm-flex d-md-none"
-        style="
-          border-left: 1px solid rgba(0, 0, 0, 0.12);
-          margin: 0 auto 0 60px;
-        "
+        class="d-flex d-md-none flex-column justify-center align-center"
+        style="margin: 0 auto 0 12px"
       >
-        <v-btn @click="changeCategoryPrevious">prev</v-btn>
-        <v-btn @click="changeCategoryNext">next</v-btn>
+        <div class="d-flex flex-column">
+          <div style="cursor: pointer" @click="changeCategoryPrevious">
+            <v-icon size="36">mdi-chevron-up</v-icon>
+          </div>
+          <div style="height: 16px"></div>
+          <div style="cursor: pointer" @click="changeCategoryNext">
+            <v-icon size="36">mdi-chevron-down</v-icon>
+          </div>
+        </div>
       </div>
 
       <div
@@ -158,12 +162,19 @@ export default defineComponent({
 
 <style scoped>
 @media (max-width: 960px) {
+  #blog-title {
+    font-size: 40px;
+  }
+
   #LeftPostCards {
     width: 100%;
     min-width: 230px;
   }
 }
 @media (min-width: 960px) {
+  #blog-title {
+    font-size: 80px;
+  }
   #LeftPostCards {
     max-width: 360px;
   }
