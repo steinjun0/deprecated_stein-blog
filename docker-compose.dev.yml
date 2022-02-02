@@ -28,6 +28,7 @@ services:
       bash -c '
       cd /container/django/webcompose
       && poetry config virtualenvs.in-project true
+      && poetry config virtualenvs.path "./.venv"
       && poetry install --no-interaction
       && poetry run python manage.py collectstatic --noinput
       && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
