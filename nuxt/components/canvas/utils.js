@@ -5,14 +5,18 @@ export default class VueCanvas {
         this.canvas = canvas
         this.ctx = canvas.getContext('2d')
         this.responseCanvasSize()
-        this.canvasWidth = canvas.width
-        this.canvasHeight = canvas.height
+        // this.canvasWidth = canvas.width
+        // this.canvasHeight = canvas.height
+        this.canvasWidth = '468'
+        this.canvasHeight = '587'
     }
 
     responseCanvasSize() {
-        const rect = this.canvas.getBoundingClientRect()
-        this.canvas.width = rect.width
-        this.canvas.height = rect.height
+        // const rect = this.canvas.getBoundingClientRect()
+        // this.canvas.width = rect.width
+        // this.canvas.height = rect.height
+        this.canvas.width = '468'
+        this.canvas.height = '587'
     }
 
     makeCanvasResponsive(drawCanvas) {

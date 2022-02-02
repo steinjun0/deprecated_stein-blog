@@ -26,7 +26,7 @@ export default defineComponent({
 
       canvas.addEventListener(
         'click',
-        circleMenuCanvas.getClickedSectorIndex.bind(circleMenuCanvas)
+        circleMenuCanvas.clickSector.bind(circleMenuCanvas)
       )
 
       canvas.addEventListener(

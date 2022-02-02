@@ -69,6 +69,10 @@ export default class CircleMenuCanvas extends VueCanvas {
     }
 
     draw(canvas, fillStyle = '#c4c4c4') {
+        if (this.canvasWidth === 0 || this.canvasHeight === 0) {
+            console.log(this.canvasWidth)
+            return
+        }
         drawCircle(canvas, this.canvasWidth / 2, this.canvasHeight / 2, this.canvasWidth / 2 - 2, 0, Math.PI * 2, '#fafafa', '#ffffff')
         this.index = Number((this.presentPositionAngle / angleConst[1]).toFixed(0))
         if (this.index >= 4) this.index = 0
@@ -151,44 +155,46 @@ export default class CircleMenuCanvas extends VueCanvas {
         this.ctx.restore()
     }
 
-    getClickedSectorIndex(event) {
+    changeSectoreWithDelay(index) {
+        // index가 0이고, 현재각은 0이 아닐떄 -> 0도(2*PI가 안되도록)
+        const objectiveAngle = (index === 0 && this.presentPositionAngle !== 0) ? angleConst[0] : angleConst[index]
+
+        if (this.presentPositionAngle.toFixed(3) >= angleConst[4] || this.presentPositionAngle.toFixed(3) < angleConst[0]) {
+            this.presentPositionAngle = 0
+        }
+
+        if (this.presentPositionAngle.toFixed(3) !== objectiveAngle.toFixed(3)) {
+            if (Number(this.presentPositionAngle.toFixed(3)) === 0 && objectiveAngle > angleConst[2]) {
+                this.presentPositionAngle = angleConst[4]
+            }
+            if (this.abs(objectiveAngle - this.presentPositionAngle) < 0.01) {
+                this.presentPositionAngle = objectiveAngle
+            } else {
+                let diff = this.sin(Number(objectiveAngle - this.presentPositionAngle)) * 0.1
+                if (diff < 0.01 && diff > 0) {
+                    diff = 0.01
+                } else if (diff > -0.01 && diff < 0) {
+                    diff = -0.01
+                }
+                this.presentPositionAngle += diff
+                if (this.presentPositionAngle < angleConst[0] || this.presentPositionAngle > angleConst[4]) {
+                    this.presentPositionAngle = 0
+                }
+            }
+            // this.presentPositionAngle = Number((this.presentPositionAngle + 0.01).toFixed(2))
+            setTimeout(() => { this.changeSectoreWithDelay(index) }, 1)
+        }
+    }
+
+    clickSector(event) {
         const x = event.offsetX;
         const y = event.offsetY;
-        function follow(object, index) {
-            // index가 0이고, 현재각은 0이 아닐떄 -> 0도(2*PI가 안되도록)
-            const objectiveAngle = (index === 0 && object.presentPositionAngle !== 0) ? angleConst[0] : angleConst[index]
 
-            if (object.presentPositionAngle.toFixed(3) >= angleConst[4] || object.presentPositionAngle.toFixed(3) < angleConst[0]) {
-                object.presentPositionAngle = 0
-            }
-
-            if (object.presentPositionAngle.toFixed(3) !== objectiveAngle.toFixed(3)) {
-                if (Number(object.presentPositionAngle.toFixed(3)) === 0 && objectiveAngle > angleConst[2]) {
-                    object.presentPositionAngle = angleConst[4]
-                }
-                if (object.abs(objectiveAngle - object.presentPositionAngle) < 0.01) {
-                    object.presentPositionAngle = objectiveAngle
-                } else {
-                    let diff = object.sin(Number(objectiveAngle - object.presentPositionAngle)) * 0.1
-                    if (diff < 0.01 && diff > 0) {
-                        diff = 0.01
-                    } else if (diff > -0.01 && diff < 0) {
-                        diff = -0.01
-                    }
-                    object.presentPositionAngle += diff
-                    if (object.presentPositionAngle < angleConst[0] || object.presentPositionAngle > angleConst[4]) {
-                        object.presentPositionAngle = 0
-                    }
-                }
-                // object.presentPositionAngle = Number((object.presentPositionAngle + 0.01).toFixed(2))
-                setTimeout(() => { follow(object, index) }, 1)
-            }
-        }
         this.sectorPart.forEach((path, index) => {
             const isStop = angleConst.includes(this.presentPositionAngle)
             if (!isStop) return
             if (this.ctx.isPointInPath(path, x, y)) {
-                follow(this, index)
+                this.changeSectoreWithDelay(index)
             }
         })
     }

@@ -34,23 +34,22 @@
       </div>
 
       <div
-        class="d-none d-md-flex"
-        style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
-      ></div>
-      <div
         class="d-sm-flex d-md-none"
         style="
           border-left: 1px solid rgba(0, 0, 0, 0.12);
           margin: 0 auto 0 60px;
         "
-      ></div>
-      <div
-        v-if="
-          $vuetify.breakpoint.md ||
-          $vuetify.breakpoint.lg ||
-          $vuetify.breakpoint.xl
-        "
       >
+        <v-btn @click="changeCategoryPrevious">prev</v-btn>
+        <v-btn @click="changeCategoryNext">next</v-btn>
+      </div>
+
+      <div
+        class="d-none d-md-flex"
+        style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
+      ></div>
+
+      <div class="d-none d-md-flex">
         <CanvasCircleMenu @canvas="(value) => (circleCanvas = value)" />
       </div>
       <div
@@ -121,6 +120,24 @@ export default defineComponent({
       return 635 * ratio
     }
 
+    const changeCategoryPrevious = () => {
+      if (circleCanvas.value.index > 0) {
+        circleCanvas.value.index -= 1
+      } else {
+        circleCanvas.value.index = 3
+      }
+      circleCanvas.value.changeSectoreWithDelay(circleCanvas.value.index)
+    }
+
+    const changeCategoryNext = () => {
+      if (circleCanvas.value.index < 3) {
+        circleCanvas.value.index += 1
+      } else {
+        circleCanvas.value.index = 0
+      }
+      circleCanvas.value.changeSectoreWithDelay(circleCanvas.value.index)
+    }
+
     onMounted(async () => {
       const res = await PostAPI.getAxios(`get_main_page_list`)
       posts.value = [].concat(res.programming, res.music, res.camera)
@@ -132,6 +149,8 @@ export default defineComponent({
       router,
       posts,
       leftPostCards,
+      changeCategoryPrevious,
+      changeCategoryNext,
     }
   },
 })
@@ -141,12 +160,12 @@ export default defineComponent({
 @media (max-width: 960px) {
   #LeftPostCards {
     width: 100%;
-    min-width: 360px;
+    min-width: 230px;
   }
 }
 @media (min-width: 960px) {
   #LeftPostCards {
-    max-width: 300px;
+    max-width: 360px;
   }
 }
 
