@@ -19,6 +19,7 @@ services:
       && npm start
       && tail -F /dev/null'
       
+      
   django:
     build: ./django
     volumes:
@@ -45,11 +46,12 @@ services:
   postgres:
     image: postgres:13.0-alpine
     volumes:
-      - ./postgres-stage:/var/lib/postgresql/data/
+      - ./postgres-prod:/var/lib/postgresql/data/
     ports:
       - 5432:5432
     env_file:
       - ./.env.postgres
+    
 
   # nginx:
   #   build: ./nginx
