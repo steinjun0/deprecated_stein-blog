@@ -38,6 +38,13 @@
         style="border-left: 1px solid rgba(0, 0, 0, 0.12); margin: 0 60px"
       ></div>
       <div
+        class="d-sm-flex d-md-none"
+        style="
+          border-left: 1px solid rgba(0, 0, 0, 0.12);
+          margin: 0 auto 0 60px;
+        "
+      ></div>
+      <div
         v-if="
           $vuetify.breakpoint.md ||
           $vuetify.breakpoint.lg ||
@@ -131,6 +138,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media (max-width: 960px) {
+  #LeftPostCards {
+    width: 100%;
+    min-width: 360px;
+  }
+}
+@media (min-width: 960px) {
+  #LeftPostCards {
+    max-width: 300px;
+  }
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;

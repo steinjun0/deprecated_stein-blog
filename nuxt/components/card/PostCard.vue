@@ -16,11 +16,28 @@
       ]</span
     >
     <span
-      style="font-size: 24px; margin-bottom: 14px"
+      style="
+        font-size: 24px;
+        margin-bottom: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        word-wrap: break-word;
+      "
       class="font-weight-medium"
       >{{ firstLineTitle }} <br />{{ secondLineTitle }}</span
     >
-    <span style="font-size: 16px">{{ subtitle }}</span>
+    <span
+      style="
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      "
+      >{{ subtitle }}</span
+    >
   </div>
 </template>
       

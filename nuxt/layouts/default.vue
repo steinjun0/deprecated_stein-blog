@@ -2,7 +2,12 @@
   <v-app>
     <v-main>
       <v-container
-        style="max-width: 1440px; min-height: 100%; padding: 60px 40px"
+        style="
+          max-width: 1440px;
+          min-width: 360px;
+          min-height: 100%;
+          padding: 60px 40px;
+        "
       >
         <Nuxt />
       </v-container>
