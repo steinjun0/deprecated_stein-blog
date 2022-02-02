@@ -144,7 +144,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
                         name=request.data['name'], type=request.data['type'], parent=parent)
             else:
                 if len(models.Category.objects.filter(
-                        name=request.data['name'], type=request.data['type'])):
+                        name=request.data['name'], type=request.data['type'])) == 0:
                     new_category = models.Category(
                         name=request.data['name'], type=request.data['type'])
             if not (new_category is None):
