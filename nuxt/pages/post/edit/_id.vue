@@ -29,7 +29,7 @@
           placeholder="부제목 입력"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" style="min-height: 300px">
+      <v-col cols="12" style="min-height: 300px" class="editor">
         <client-only>
           <quill-editor
             ref="editor"
@@ -38,8 +38,15 @@
           />
         </client-only>
       </v-col>
-      <v-col>
+      <v-col class="d-flex">
         <v-btn @click="savePost">저장</v-btn>
+        <v-btn
+          v-if="!isNewPost"
+          style="margin-left: auto"
+          class="red lighten-2 white--text"
+          @click="deletePost"
+          >삭제</v-btn
+        >
       </v-col>
     </v-row>
   </div>
@@ -148,6 +155,12 @@ export default defineComponent({
         )
       }
     }
+    const deletePost = async () => {
+      const res = await PostAPI.deleteAxios(params.id, '')
+      swal.apiResponse(currentInstance, res, '게시글이 삭제되었습니다', () => {
+        router.push(`/`)
+      })
+    }
     watch(selectedCategory, (val) => {
       let alreadyExist = false
       selectedCategories.value.forEach((element) => {
@@ -182,7 +195,9 @@ export default defineComponent({
       selectedCategory,
       selectedCategories,
       localPost,
+      isNewPost,
       savePost,
+      deletePost,
       getHTML,
     }
   },
@@ -190,8 +205,8 @@ export default defineComponent({
 </script>
 
 <style>
-.ql-container {
-  max-height: 500px;
+.editor .ql-container {
+  max-height: 800px;
   overflow-y: scroll;
 }
 </style>
