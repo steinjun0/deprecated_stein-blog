@@ -18,7 +18,11 @@
             </div>
             <div class="d-flex" style="margin-left: auto; margin-top: auto">
               <div
-                v-if="post.modified_at !== post.created_at"
+                v-if="
+                  Utils.shortenTime(post.modified_at) !==
+                  Utils.shortenTime(post.created_at)
+                "
+                class="d-none d-md-flex"
                 style="font-size: 12px; color: #686868"
               >
                 {{ Utils.shortenTime(post.modified_at) }}
