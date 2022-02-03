@@ -7,6 +7,7 @@
     </v-row>
 
     <div
+      class="d-none d-sm-flex"
       style="margin: 165px 0 0 73px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
     >
       <div
