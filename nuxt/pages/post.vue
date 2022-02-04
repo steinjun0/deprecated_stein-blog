@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row">
-    <v-row style="max-width: 946px; margin-top: 36px">
+    <v-row style="max-width: 946px; margin-top: 36px; width: 100%">
       <v-col>
         <nuxt-child :key="$route.fullPath" :post="post"></nuxt-child>
       </v-col>

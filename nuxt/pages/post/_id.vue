@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row">
-    <v-row v-if="post.title" style="max-width: 946px">
+    <v-row v-if="post.title" style="max-width: 946px; width: 100%">
       <v-col cols="12">
         <div class="d-flex flex-column">
           <div style="font-size: 12px; margin-left: 3px">
