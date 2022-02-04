@@ -2,6 +2,10 @@ import colors from 'vuetify/es5/util/colors'
 import webpack from 'webpack'
 
 export default {
+  dev: process.env.NODE_ENV !== 'production',
+  env: {
+    API_URL: process.env.API_URL || 'cant loading .env',
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: 'Stein.log',
@@ -11,6 +15,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { hid: 'og:image', property: 'og:image', content: 'https://blog.steinlog.net' + '/blog-icon-512.png' }
     ],
     link: [{ rel: 'icon', type: 'image/png', href: '/blog-icon-512.png' }],
   },
@@ -76,10 +81,7 @@ export default {
       fileName: 'blog-icon-512.png'
     }
   },
-  dev: process.env.NODE_ENV !== 'production',
-  env: {
-    API_URL: process.env.API_URL || 'cant loading .env',
-  },
+
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {

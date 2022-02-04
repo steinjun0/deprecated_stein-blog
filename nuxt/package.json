@@ -1,8 +1,8 @@
 {
-  "name": "webcompose",
+  "name": "stein-log",
   "version": "1.0.0",
   "private": true,
-  "description": "webcompose",
+  "description": "jun logs > Stein.log",
   "scripts": {
     "dev": "nuxt dev --dotenv .env.dev",
     "build": "nuxt build --dotenv .env.prod",

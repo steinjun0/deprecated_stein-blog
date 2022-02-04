@@ -59,7 +59,6 @@ export default defineComponent({
       default: () => {},
     },
   },
-
   setup(props, context) {
     const addCategoryQuery = () => {
       if (
@@ -95,6 +94,17 @@ export default defineComponent({
     //   }
     // })
     return { Utils }
+  },
+  head() {
+    return {
+      title: this.title,
+      meta: [
+        {
+          hid: `${this.post.sub_title}`,
+          name: `${this.post.title.replace('\\', ' ')}`,
+        },
+      ],
+    }
   },
 })
 </script>
