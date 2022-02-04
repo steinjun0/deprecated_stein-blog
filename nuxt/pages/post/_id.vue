@@ -99,9 +99,9 @@ export default defineComponent({
     return {
       title: this.title,
       meta: [
-        { hid: 'og:description', content: `${this.post.sub_title}` },
+        { hid: 'description', content: `${this.post.sub_title}` },
         {
-          hid: 'og:title',
+          hid: 'title',
           name: `${this.post.title ? this.post.title.replace('\\', ' ') : ''}`,
         },
       ],
