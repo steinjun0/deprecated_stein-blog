@@ -102,11 +102,13 @@ export default defineComponent({
         {
           hid: 'og:description',
           name: 'og:description',
+          property: 'og:description',
           content: `${this.post.sub_title}`,
         },
         {
           hid: 'og:title',
           name: 'og:title',
+          property: 'og:title',
           content: `${
             this.post.title ? this.post.title.replace('\\', ' ') : ''
           }`,
