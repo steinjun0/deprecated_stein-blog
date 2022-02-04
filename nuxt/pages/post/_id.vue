@@ -101,7 +101,7 @@ export default defineComponent({
       meta: [
         {
           hid: `${this.post.sub_title}`,
-          name: `${this.post.title.replace('\\', ' ')}`,
+          // name: `${this.post.title.replace('\\', ' ')}`,
         },
       ],
     }
