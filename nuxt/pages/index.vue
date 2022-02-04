@@ -176,7 +176,7 @@ export default defineComponent({
     font-size: 80px;
   }
   #LeftPostCards {
-    max-width: 360px;
+    /* max-width: 360px; */
   }
 }
 
