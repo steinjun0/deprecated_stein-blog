@@ -8,7 +8,7 @@
       class="d-flex flex-row justify-space-between"
       style="height: 601px"
     >
-      <div>
+      <div class="d-flex flex-column">
         <div
           ref="leftPostCardsWrapper"
           style="overflow-y: hidden; height: 601px"
