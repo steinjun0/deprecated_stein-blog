@@ -166,10 +166,11 @@ export default defineComponent({
       refreshData(id, isPostList, post)
     })
 
+    refreshData(id, isPostList, post)
+    setCategories(categories)
+
     onMounted(() => {
       window.addEventListener('scroll', handleScroll)
-      refreshData(id, isPostList, post)
-      setCategories(categories)
     })
 
     // watch(context.root._route.path, (val) => {
