@@ -4,15 +4,15 @@ import webpack from 'webpack'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - nuxt',
-    title: 'webcompose',
+    titleTemplate: 'Stein.log',
+    title: 'Stein.log',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/png', href: '/blog-icon-512.png' }],
   },
   server: {
     host: '0.0.0.0', // default: localhost,
@@ -68,12 +68,12 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      name: 'webcompose',
-      short_name: 'webcompose'
+      name: 'Stein.log',
+      short_name: 'Stein.log'
     },
     icon: {
       sizes: [64, 120, 144, 152, 167, 180, 192, 384, 512, 1024],
-      fileName: 'icon.png'
+      fileName: 'blog-icon-512.png'
     }
   },
   dev: process.env.NODE_ENV !== 'production',
