@@ -13,11 +13,13 @@ if (user !== null) {
 
 export default {
   refreshUserData() {
-    user = JSON.parse(localStorage.getItem('userData'))
-    if (user !== null) {
-      tokenHeader = { headers: { Authorization: `Bearer ${user.token}` } }
-    } else {
-      tokenHeader = false
+    if (process.client) {
+      user = JSON.parse(localStorage.getItem('userData'))
+      if (user !== null) {
+        tokenHeader = { headers: { Authorization: `Bearer ${user.token}` } }
+      } else {
+        tokenHeader = false
+      }
     }
   },
   async getAxios(url) {
@@ -195,11 +197,13 @@ export class ViewSetAPI {
   }
 
   refreshUserData() {
-    user = JSON.parse(localStorage.getItem('userData'))
-    if (user !== null) {
-      tokenHeader = { headers: { Authorization: `Bearer ${user.token}` } }
-    } else {
-      tokenHeader = false
+    if (process.client) {
+      user = JSON.parse(localStorage.getItem('userData'))
+      if (user !== null) {
+        tokenHeader = { headers: { Authorization: `Bearer ${user.token}` } }
+      } else {
+        tokenHeader = false
+      }
     }
   }
 
