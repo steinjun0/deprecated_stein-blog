@@ -15,7 +15,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
-      { hid: 'og:image', property: 'og:image', content: 'https://blog.steinjun.net' + '/blog-icon-512_16x9.png' }
+      { hid: 'og:image', property: 'og:image', content: 'https://blog.steinjun.net' + '/blog-icon-512-1200x630.png' }
     ],
     link: [{ rel: 'icon', type: 'image/png', href: '/blog-icon-512.png' }],
   },
