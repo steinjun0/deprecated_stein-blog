@@ -7,6 +7,7 @@
     </v-row>
 
     <div
+      id="right-floating-category-nav"
       class="d-none d-sm-flex"
       style="margin: 165px 0 0 73px; border-left: 1px solid rgba(0, 0, 0, 0.12)"
     >
@@ -59,8 +60,8 @@
 </template>
 
 <script>
+import { defineComponent, ssrRef, useAsync } from '@nuxtjs/composition-api'
 import {
-  defineComponent,
   ref,
   onMounted,
   computed,
@@ -79,11 +80,11 @@ export default defineComponent({
     const id = computed(() => context.root._route.params.id)
     const path = computed(() => context.root._route.path)
     const isPostList = computed(() => path.value === '/post/list')
-    const post = ref({})
+    const post = ssrRef({})
+    const categories = ssrRef([])
 
     const presentSideNavigationPosition = ref(0)
 
-    const categories = ref([])
     const menuList = ref([
       { text: 'Total', type: 'main' },
       { text: 'Programming', type: 'main' },
@@ -111,6 +112,7 @@ export default defineComponent({
       } else {
         postRef.value = res
       }
+      return res
     }
 
     const refreshData = (idRef, isPostListRef, post) => {
@@ -123,8 +125,9 @@ export default defineComponent({
         alert('wrong access')
         context.root._router.push('/')
       } else {
-        enterPostProcess(id, post)
+        useAsync(() => enterPostProcess(id, post))
       }
+      return ''
     }
 
     const setCategories = async (categoriesRef) => {
@@ -151,6 +154,10 @@ export default defineComponent({
           }
         }
       }
+      const bak = categoriesRef.value
+      categoriesRef.value = bak
+
+      return categoryRes
     }
 
     const handleScroll = () => {
@@ -167,7 +174,7 @@ export default defineComponent({
     })
 
     refreshData(id, isPostList, post)
-    setCategories(categories)
+    useAsync(() => setCategories(categories))
 
     onMounted(() => {
       window.addEventListener('scroll', handleScroll)
@@ -176,7 +183,13 @@ export default defineComponent({
     // watch(context.root._route.path, (val) => {
     //   if
     // })
-    return { post, menuList, categories, path, presentSideNavigationPosition }
+    return {
+      post,
+      menuList,
+      categories,
+      path,
+      presentSideNavigationPosition,
+    }
   },
 })
 </script>
