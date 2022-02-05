@@ -5,6 +5,7 @@
   "description": "jun logs > Stein.log",
   "scripts": {
     "dev": "nuxt dev --dotenv .env.dev",
+    "https-dev": "nuxt dev --dotenv .env.prod",
     "build": "nuxt build --dotenv .env.prod",
     "start": "nuxt start",
     "generate": "nuxt generate",
