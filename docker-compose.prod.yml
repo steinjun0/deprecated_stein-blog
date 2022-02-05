@@ -15,9 +15,9 @@ services:
       bash -c '
       cd /container/nuxt
       && npm ci
-      && npm run build
       && npm start
       && tail -F /dev/null'
+      # && npm run https-dev
       
       
   django:
