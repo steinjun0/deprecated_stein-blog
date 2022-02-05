@@ -80,24 +80,20 @@ class PostViewSet(viewsets.ModelViewSet):
         for post in posts:
             categories = post.categories.values()
             for category in categories:
-                if counter[0] <= 2:
+                if counter[0] <= 2 and category['name'] == 'Programming':
+                    result['programming'].append(
+                        {'id': post.id, 'title': post.title, 'sub_title': post.sub_title, 'categories': list(map(get_data, categories))})
                     counter[0] += 1
-                    if category['name'] == 'Programming':
-                        result['programming'].append(
-                            {'id': post.id, 'title': post.title, 'sub_title': post.sub_title, 'categories': list(map(get_data, categories))})
-                        break
-                elif category['name'] == 'Camera':
-                    if counter[1] <= 2:
-                        counter[1] += 1
+
+                if counter[1] <= 2 and category['name'] == 'Camera':    
                     result['camera'].append(
                         {'id': post.id, 'title': post.title, 'sub_title': post.sub_title, 'categories': list(map(get_data, categories))})
-                    break
-                elif category['name'] == 'Music':
-                    if counter[2] <= 2:
-                        counter[2] += 1
+                    counter[1] += 1
+
+                if counter[2] <= 2 and category['name'] == 'Music':
                     result['music'].append(
                         {'id': post.id, 'title': post.title, 'sub_title': post.sub_title, 'categories': list(map(get_data, categories))})
-                    break
+                    counter[2] += 1
         # serializer = serializers.PostSerializer(
         #     posts, many=True, context={'request': request})
         return Response(result)
