@@ -8,3 +8,7 @@ location ^~ /.well-known/acme-challenge/ {
     break;
 }
 ## End of configuration add by letsencrypt container
+location /static {
+    alias /container/react/build/static;
+    add_header Access-Control-Allow-Origin *;
+}

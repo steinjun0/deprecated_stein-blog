@@ -1,25 +1,36 @@
 version: '2.4'
 
 services:
-  nuxt:
+  # nuxt:
+  #   image: node:14.17
+  #   volumes:
+  #     - ./nuxt:/container/nuxt
+  #   expose:
+  #     - 3000
+  #   environment:
+  #     - VIRTUAL_HOST=blog.steinjun.net,www.blog.steinjun.net
+  #     - VIRTUAL_PORT=3000
+  #     - LETSENCRYPT_HOST=blog.steinjun.net,www.blog.steinjun.net
+  #   command: 
+  #     bash -c '
+  #     cd /container/nuxt
+  #     && npm ci
+  #     && npm start
+  #     && tail -F /dev/null'
+  #     # && npm run https-dev
+
+  react:
     image: node:14.17
     volumes:
-      - ./nuxt:/container/nuxt
+      - ./react:/container/react
     expose:
       - 3000
     environment:
       - VIRTUAL_HOST=blog.steinjun.net,www.blog.steinjun.net
       - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=blog.steinjun.net,www.blog.steinjun.net
-    command: 
-      bash -c '
-      cd /container/nuxt
-      && npm ci
-      && npm start
-      && tail -F /dev/null'
-      # && npm run https-dev
-      
-      
+    command: bash -c ' cd /container/react &&npm install -g serve && serve -s build && tail -F /dev/null' # && npm run https-dev
+
   django:
     build: ./django
     volumes:
@@ -32,15 +43,7 @@ services:
       - VIRTUAL_HOST=api.blog.steinjun.net
       - VIRTUAL_PORT=8000
       - LETSENCRYPT_HOST=api.blog.steinjun.net
-    command: 
-      bash -c ' 
-      cd /container/django/webcompose
-      && poetry config virtualenvs.in-project true
-      && poetry config virtualenvs.path "./.venv"
-      && poetry install --no-interaction
-      && poetry run python manage.py collectstatic --noinput
-      && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
-      && tail -F /dev/null' 
+    command: bash -c ' cd /container/django/webcompose && poetry config virtualenvs.in-project true && poetry config virtualenvs.path "./.venv" && poetry install --no-interaction && poetry run python manage.py collectstatic --noinput && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application && tail -F /dev/null'
     depends_on:
       - postgres
   postgres:
@@ -51,7 +54,6 @@ services:
       - 5432:5432
     env_file:
       - ./.env.postgres
-    
 
   # nginx:
   #   build: ./nginx
@@ -73,13 +75,15 @@ services:
       - 443:443
     volumes:
       - ./django:/container/django
+      - ./react:/container/react
       - ./nginx-proxy/certs:/etc/nginx/certs
       - ./nginx-proxy/html:/usr/share/nginx/html
       - ./nginx-proxy/vhost.d:/etc/nginx/vhost.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - django
-      - nuxt
+      - react
+      # - nuxt
 
   nginx-proxy-letsencrypt:
     image: nginxproxy/acme-companion
