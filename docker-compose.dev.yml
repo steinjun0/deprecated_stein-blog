@@ -7,14 +7,10 @@ services:
       - ./nuxt:/container/nuxt
     expose:
       - 3000
-    command: 
-      bash -c '
-      cd /container/nuxt
-      && npm run dev
-      && tail -F /dev/null'
+    command: bash -c ' cd /container/nuxt && npm run dev && tail -F /dev/null'
       # && npm ci 
-            # insert it to before 'npm run dev' when doesn't have node_modules
-            # also package-lock.json doesn't exist
+      # insert it to before 'npm run dev' when doesn't have node_modules
+      # also package-lock.json doesn't exist
 
   django:
     build: ./django
@@ -24,19 +20,11 @@ services:
       - 8000
     env_file:
       - ./django/.env.dev
-    command:
-      bash -c '
-      cd /container/django/webcompose
-      && poetry config virtualenvs.in-project true
-      && poetry config virtualenvs.path "./.venv"
-      && poetry install --no-interaction
-      && poetry run python manage.py collectstatic --noinput
-      && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application
-      && tail -F /dev/null'
+    command: bash -c ' cd /container/django/webcompose && poetry config virtualenvs.in-project true && poetry config virtualenvs.path "./.venv" && poetry install --no-interaction && poetry run python manage.py collectstatic --noinput && poetry run gunicorn --bind 0.0.0.0:8000 --reload webcompose.wsgi:application && tail -F /dev/null'
       # && poetry update
-            # Use this command if you want to update dependencies latest 
-            # or to fix dependencies version error.
-      
+      # Use this command if you want to update dependencies latest 
+      # or to fix dependencies version error.
+
     depends_on:
       - postgres
 
